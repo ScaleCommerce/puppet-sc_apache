@@ -47,12 +47,10 @@ classes:
   - sc_apache
   
 sc_apache::vhosts:
-  # Default vhost matches all servernames which are not configured in any vhost
-  default:
+  default: # Default vhost matches all servernames which are not configured in any vhost
     docroot: /var/www/catchall/web
     default_vhost: true
-  # Normal vhost
-  www.example.com:
+  www.example.com: # Normal vhost
     server_aliases: ['example.com']
     docroot: /var/www/www.example.com/web
     override: ['All']
