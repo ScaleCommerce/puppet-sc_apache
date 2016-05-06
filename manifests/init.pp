@@ -40,8 +40,6 @@ class sc_apache (
 ){
   class { '::sc_apache::install':
     vhosts      => hiera_hash('apache::vhosts', {}),
-    php_version => hiera('php::version'),
-    install_opcache => hiera('vm::install_opcache', false),
   }
 
   class { '::sc_apache::php': }->
