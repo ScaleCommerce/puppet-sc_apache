@@ -22,7 +22,7 @@ class sc_apache::tideways (
   }
   package {['tideways-daemon', 'tideways-php', 'tideways-cli']:
     ensure  => $ensure,
-    require => [Package[$libapache_version], Apt::Source['tideways']]
+    require => [Package[$libapache_version], Apt::Source['tideways']],
     notify  => Service['apache2'],
   }
 }
