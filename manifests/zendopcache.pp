@@ -49,7 +49,6 @@ class sc_apache::zendopcache (
       notify  => Service['apache2'],
       owner   => root,
       group   => root,
-      ensure  => $ensure,
     }
   }
 }
