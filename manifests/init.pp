@@ -38,13 +38,8 @@
 class sc_apache (
 
 ){
-  class { '::sc_apache::install':
+  class { '::sc_apache::vhosts':
     vhosts      => hiera_hash('apache::vhosts', {}),
   }->
-
   class { '::sc_apache::php': }->
-  class { '::sc_apache::tideways': }->
-  class { '::sc_apache::zendopcache': }->
-  class { '::sc_apache::zendguard': }->
-  class { '::sc_apache::ioncube': }
 }

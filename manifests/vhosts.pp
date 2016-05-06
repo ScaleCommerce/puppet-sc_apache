@@ -1,4 +1,4 @@
-class sc_apache::install (
+class sc_apache::vhosts (
   $vhosts = {},
   $supervisor_init_script = '/etc/supervisor/supervisor-init-wrapper',
   $supervisor_conf_script = '/etc/supervisor/conf.d/apache2.conf',
