@@ -49,7 +49,7 @@ class sc_apache::zendopcache (
       notify  => Service['apache2'],
       owner   => root,
       group   => root,
-      ensure  => $zendguard_file_ensure,
+      ensure  => $ensure,
     }
   }
 }
