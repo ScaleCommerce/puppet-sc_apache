@@ -1,6 +1,5 @@
 class sc_apache::php (
   $php_version = '5.6',
-  $install_opcache = false,
 ){
   $version_repo = $php_version ? {
     '5.4' => 'syseleven-platform/php54',
