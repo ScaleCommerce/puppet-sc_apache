@@ -41,4 +41,15 @@ class sc_apache::zendopcache (
       target => "/etc/$php_etc_dir/mods-available/opcache.ini",
     }
   }
+  # also replace opcache.so in php 5.5 and 5.6
+  if $php_version == '5.5' or $php_version == '5.6' {
+    file {"$php_lib_path/opcache.so":
+      source  => "puppet:///modules/sc_apache/php-$php_version/opcache.so",
+      require => Package[$libapache_version],
+      notify  => Service['apache2'],
+      owner   => root,
+      group   => root,
+      ensure  => $zendguard_file_ensure,
+    }
+  }
 }

@@ -65,7 +65,7 @@ class sc_apache::install (
     owner   => root,
     group   => root,
     mode    => '0644',
-    source  => 'puppet:///modules/vm_config/zabbix/opcache/opcachestats.php',
+    source  => 'puppet:///modules/sc_apache/zabbix/opcache/opcachestats.php',
     require => File['/var/www/localhost/opcache'],
   }
 
@@ -73,7 +73,7 @@ class sc_apache::install (
     owner   => root,
     group   => root,
     mode    => '0644',
-    source  => 'puppet:///modules/vm_config/zabbix/opcache/index.php',
+    source  => 'puppet:///modules/sc_apache/zabbix/opcache/index.php',
     require => File['/var/www/localhost/opcache'],
   }
 
@@ -81,7 +81,7 @@ class sc_apache::install (
     owner   => root,
     group   => root,
     mode    => '0644',
-    source  => 'puppet:///modules/vm_config/zabbix/opcache/.htaccess',
+    source  => 'puppet:///modules/sc_apache/zabbix/opcache/.htaccess',
     require => File['/var/www/localhost/opcache'],
   }
 

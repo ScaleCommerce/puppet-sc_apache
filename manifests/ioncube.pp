@@ -14,7 +14,7 @@ class sc_apache::ioncube(
     $ioncube_loader_ensure = 'absent'
   }
   file {"$php_lib_path/ioncube_loader_lin_$php_version.so":
-    source  => "puppet:///modules/vm_config/php-$php_version/ioncube_loader_lin_$php_version.so",
+    source  => "puppet:///modules/sc_apache/php-$php_version/ioncube_loader_lin_$php_version.so",
     require => Package[$libapache_version],
     ensure => $ioncube_loader_ensure,
   }->

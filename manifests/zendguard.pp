@@ -17,7 +17,7 @@ class sc_apache::zendguard(
 
   # install zendguard
   file {"$php_lib_path/ZendGuardLoader.so":
-    source  => "puppet:///modules/vm_config/php-$php_version/ZendGuardLoader.so",
+    source  => "puppet:///modules/sc_apache/php-$php_version/ZendGuardLoader.so",
     require => Package[$libapache_version],
     ensure => $zendguard_file_ensure,
   }->
@@ -34,15 +34,5 @@ class sc_apache::zendguard(
     ensure => $zendguard_link_ensure,
     target => "/etc/$php_etc_dir/mods-available/zendguard.ini",
   }
-  # also replace opcache.so in php 5.5 and 5.6
-  if $php_version == '5.5' or $php_version == '5.6' {
-    file {"$php_lib_path/opcache.so":
-      source  => "puppet:///modules/vm_config/php-$php_version/opcache.so",
-      require => Package[$libapache_version],
-      notify  => Service['apache2'],
-      owner   => root,
-      group   => root,
-      ensure  => $zendguard_file_ensure,
-    }
-  }
+
 }

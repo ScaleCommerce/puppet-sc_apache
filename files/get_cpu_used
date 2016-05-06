@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# 2013, s.andres@syseleven.de
+
+if ((! $#)); then
+  echo "Usage: $0 zabbix_agent_ip_address"
+  exit 1
+fi
+
+PATH=$PATH:/usr/local/bin
+
+address=$1
+
+cpus_idle=$(zabbix_get -s "$address" -k "system.cpu.util[,idle,avg1]")
+
+#echo "idle all cpus: $cpus_idle%"
+cpus_used=$(echo "scale=3; 100 - $cpus_idle" | bc -l )
+#echo  "cpus used: $cpus_used%"
+
+cpus=$(grep -c proc /proc/cpuinfo)
+#echo -n "cpus used * cpu count ($cpus) / 100: "
+echo "scale=4; ($cpus_used * $cpus / 100)"|bc -l
