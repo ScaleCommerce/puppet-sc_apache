@@ -40,7 +40,7 @@ class sc_apache (
 ){
   class { '::sc_apache::install':
     vhosts      => hiera_hash('apache::vhosts', {}),
-  }
+  }->
 
   class { '::sc_apache::php': }->
   class { '::sc_apache::tideways': }->
