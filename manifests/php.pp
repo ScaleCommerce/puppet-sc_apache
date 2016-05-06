@@ -21,6 +21,10 @@
 #   - php5-intl
 #   - php5-xsl
 #
+# sc_apache::php_ini_settings
+#   max_execution_time: 1800
+#   memory_limit: 30M
+#
 # === Authors
 #
 # Andreas Ziethen <az@scale.sc>
@@ -130,11 +134,13 @@ class sc_apache::php (
     require => [Package[$libapache_version], Apt::Ppa["ppa:$version_repo"]],
   }
 
-  # php ini settings
-  augeas { 'php_ini':
-    notify  => Service['apache2'],
-    context => "/files/etc/$php_etc_dir/apache2/php.ini/PUPPET_AUGEAS_OVERRIDES",
-    changes => hiera_array('php::ini_settings', {}),
-    require => Package[[$libapache_version], "$php_extension_name-cli"],
+  $php_ini_settings = hiera_hash("sc_apache::php_ini_settings")
+  each($php_ini_settings) |$name, $value| {
+    augeas { $name:
+      notify  => Service['apache2'],
+      context => "/files/etc/$php_etc_dir/apache2/php.ini/PUPPET_AUGEAS_OVERRIDES",
+      changes => "set $name $value",
+      require => Package[[$libapache_version], "$php_extension_name-cli"],
+    }
   }
 }
