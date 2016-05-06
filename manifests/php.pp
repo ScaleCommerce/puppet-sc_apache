@@ -40,7 +40,7 @@ class sc_apache::php (
       apt::key {"ppa:$version_repo":
         ensure => present,
         id     => $repo_key_sys11,
-      }->
+      }
       apt::ppa {"ppa:$version_repo":
         ensure => present,
       }
@@ -48,7 +48,7 @@ class sc_apache::php (
     '5.5': {
       apt::ppa {['ppa:ondrej/php5-5.6', 'ppa:syseleven-platform/php54']:
         ensure => absent,
-      }->
+      }
       apt::ppa {"ppa:$version_repo":
         ensure => present,
       }
@@ -60,7 +60,7 @@ class sc_apache::php (
       apt::key {"ppa:$version_repo":
         ensure => present,
         id     => $repo_key_ondrej,
-      }->
+      }
       apt::ppa {"ppa:$version_repo":
         ensure => present,
       }
@@ -69,7 +69,7 @@ class sc_apache::php (
       apt::key {"ppa:$version_repo":
         ensure => present,
         id     => $repo_key_ondrej,
-      }->
+      }
       apt::ppa {"ppa:$version_repo":
         ensure => present,
       }
