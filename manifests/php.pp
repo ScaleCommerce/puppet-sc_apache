@@ -92,7 +92,7 @@ class sc_apache::php (
 
   package { [hiera_array('php::modules', [])]:
     ensure  => installed,
-    require => Package[$libapache_version],
+    require => [Package[$libapache_version], Apt::Ppa["ppa:$version_repo"]],
   }
 
   # php ini settings

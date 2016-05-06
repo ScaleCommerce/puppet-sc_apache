@@ -6,6 +6,7 @@ class sc_apache::zendopcache (
   $php_version       = $sc_apache::php::php_version
   $php_etc_dir       = $sc_apache::php::php_etc_dir
   $libapache_version = $sc_apache::php::libapache_version
+  $version_repo      = $sc_apache::php::version_repo
 
   # install zendopcache in php 5.4
   if ($php_version == '5.4') {
@@ -18,6 +19,7 @@ class sc_apache::zendopcache (
 
     package {'php-pear':
       ensure => $ensure,
+      require => Apt::Ppa["ppa:$version_repo"],
     }->
     package {['build-essential', 'php5-dev']:
       ensure => $ensure,
