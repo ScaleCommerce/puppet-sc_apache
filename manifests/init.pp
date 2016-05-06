@@ -1,6 +1,6 @@
-# == Class: sc_apache
+# == Class: sc-apache
 #
-# Full description of class sc_apache here.
+# Full description of class dummy here.
 #
 # === Parameters
 #
@@ -23,19 +23,30 @@
 #
 # === Examples
 #
-#  class { 'sc_apache':
+#  class { 'dummy':
 #    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #  }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Andreas Ziethen <az@scale.sc>
 #
 # === Copyright
 #
-# Copyright 2016 Your name here, unless otherwise noted.
+# Copyright 2016 ScaleCommerce GmbH.
 #
-class sc_apache {
+class sc_apache (
 
+){
+  class { '::sc_apache::install':
+    vhosts      => hiera_hash('apache::vhosts', {}),
+    php_version => hiera('php::version'),
+    install_opcache => hiera('vm::install_opcache', false),
+  }
 
+  class { '::sc_apache::php': }->
+  class { '::sc_apache::tideways': }->
+  class { '::sc_apache::zendopcache': }->
+  class { '::sc_apache::zendguard': }->
+  class { '::sc_apache::ioncube': }
 }
