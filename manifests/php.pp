@@ -21,7 +21,7 @@
 #   - php5-intl
 #   - php5-xsl
 #
-# sc_apache::php_ini_settings
+# sc_apache::php_ini_settings:
 #   max_execution_time: 1800
 #   memory_limit: 30M
 #
