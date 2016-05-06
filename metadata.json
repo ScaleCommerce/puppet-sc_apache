@@ -8,10 +8,8 @@
   "project_page": "https://github.com/ScaleCommerce/puppet-sc_apache",
   "issues_url": "https://github.com/ScaleCommerce/puppet-sc_apache/issues",
   "dependencies": [
-    {
-      "name":"puppetlabs-stdlib","version_requirement":">= 1.0.0",
-      "name":"puppetlabs-apache",
-    }
+    { "name":"puppetlabs-stdlib","version_requirement":">= 1.0.0" },
+    { "name":"puppetlabs-apache" },
   ]
 }
 
