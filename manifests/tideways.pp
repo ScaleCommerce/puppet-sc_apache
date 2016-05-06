@@ -19,7 +19,7 @@ class sc_apache::tideways (
     location => 'http://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages',
     release  => 'debian',
     repos    => 'main',
-  }
+  }->
   package {['tideways-daemon', 'tideways-php', 'tideways-cli']:
     ensure  => $ensure,
     require => Package[$libapache_version],

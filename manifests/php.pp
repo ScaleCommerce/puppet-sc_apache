@@ -87,7 +87,9 @@ class sc_apache::php (
 
   package {$libapache_version:
     ensure => installed,
-  }->
+    require => Apt::Ppa["ppa:$version_repo"],
+  }
+
   package { [hiera_array('php::modules', [])]:
     ensure  => installed,
     require => Package[$libapache_version],
