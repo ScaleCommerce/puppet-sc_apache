@@ -35,13 +35,15 @@ class sc_apache::vhosts (
   $vhosts = {},
 ){
 
-
-
   $vhost_defaults = hiera_hash('sc_apache::vhosts_defaults', {})
 
   file {'/var/www/html':
     ensure => absent,
     force  => true,
+  }
+
+  file { '/var/www/localhost/':
+    ensure => directory,
   }
 
   file { '/var/www/localhost/opcache/':
