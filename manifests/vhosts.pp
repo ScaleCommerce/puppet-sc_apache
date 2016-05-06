@@ -42,10 +42,6 @@ class sc_apache::vhosts (
     force  => true,
   }
 
-  file { '/var/www/localhost/':
-    ensure => directory,
-  }
-
   file { '/var/www/localhost/opcache/':
     ensure => directory,
     require => File['/var/www/localhost'],
