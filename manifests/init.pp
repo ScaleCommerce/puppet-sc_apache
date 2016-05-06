@@ -1,31 +1,29 @@
-# == Class: sc-apache
+# == Class: sc_apache
 #
-# Full description of class dummy here.
-#
-# === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+# ScaleCommerce Wrapper Module for puppetlabs-apache.
+# Manages Supervisord, vhosts, OPCache, ZendGuard Loader, IonCube.
 #
 # === Variables
 #
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
+# [*apache::vhosts*]
+#  array with apache vhost config, needed to automaticaly build the docroots
 #
 # === Examples
+# hiera-Example:
+# ---
+# classes:
+#   - sc_apache
 #
-#  class { 'dummy':
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
-#  }
+#  sc_apache::vhosts:
+#    default: # Default vhost matches all servernames which are not configured in any vhost
+#      docroot: /var/www/catchall/web
+#      default_vhost: true
+#    www.example.com: # Normal vhost
+#      server_aliases: ['example.com']
+#      docroot: /var/www/www.example.com/web
+#      override: ['All']
+#
+# for more examples regarding php config etc. see subclasses
 #
 # === Authors
 #

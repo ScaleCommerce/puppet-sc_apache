@@ -1,3 +1,29 @@
+# == Class: sc_apache::ioncube
+#
+# Installation of Ioncube Encode
+#
+# === Variables
+#
+# [*sc_apache::ioncube::ensure*]
+#  values: link, absent - used to force deinstall of ioncube extension
+#
+# === Examples
+#
+# ---
+# classes:
+#   - sc_apache::ioncube
+#
+# sc_apache::ioncube:ensure: absent
+#
+#
+# === Authors
+#
+# Andreas Ziethen <az@scale.sc>
+#
+# === Copyright
+#
+# Copyright 2016 ScaleCommerce GmbH.
+#
 class sc_apache::ioncube(
   $ensure = 'link',
 ) {

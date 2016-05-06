@@ -1,6 +1,39 @@
+# == Class: sc_apache::php
+#
+# Installation of PHP, PHP Extensions, PHP ini settings
+#
+# === Variables
+#
+# [*php::version*]
+#  by now this may contain: 5.4, 5.5, 5.6, 7.0
+#
+# === Examples
+#
+# ---
+# php::version: '5.6'
+#
+# php::modules:
+#   - php5-mysql
+#   - php5-gd
+#   - php5-mcrypt
+#   - php5-cli
+#   - php5-curl
+#   - php5-intl
+#   - php5-xsl
+#
+# === Authors
+#
+# Andreas Ziethen <az@scale.sc>
+#
+# === Copyright
+#
+# Copyright 2016 ScaleCommerce GmbH.
+#
 class sc_apache::php (
   $php_version = '5.6',
+  $php_modules = hiera_array('php::modules', []),
 ){
+  # set some variables an pathes which depend on php version
   $version_repo = $php_version ? {
     '5.4' => 'syseleven-platform/php54',
     '5.5' => 'ondrej/php5',
@@ -32,6 +65,7 @@ class sc_apache::php (
     }
   }
 
+  # set key and repository and install package
   case $php_version {
     '5.4': {
       apt::ppa {['ppa:ondrej/php5-5.6', 'ppa:ondrej/php5']:
@@ -90,7 +124,8 @@ class sc_apache::php (
     require => Apt::Ppa["ppa:$version_repo"],
   }
 
-  package { [hiera_array('php::modules', [])]:
+  # install php modules
+  package { [$php_modules]:
     ensure  => installed,
     require => [Package[$libapache_version], Apt::Ppa["ppa:$version_repo"]],
   }

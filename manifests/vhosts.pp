@@ -1,3 +1,36 @@
+# == Class: sc_apache::vhosts
+#
+# Settings for Apache vhosts
+#
+# === Variables
+#
+# [*apache::vhosts*]
+#  array of vhost settings
+#
+# === Examples
+#
+# hiera-Example:
+# ---
+# classes:
+#   - sc_apache
+#
+#  sc_apache::vhosts:
+#    default: # Default vhost matches all servernames which are not configured in any vhost
+#      docroot: /var/www/catchall/web
+#      default_vhost: true
+#    www.example.com: # Normal vhost
+#      server_aliases: ['example.com']
+#      docroot: /var/www/www.example.com/web
+#      override: ['All']
+#
+# === Authors
+#
+# Andreas Ziethen <az@scale.sc>
+#
+# === Copyright
+#
+# Copyright 2016 ScaleCommerce GmbH.
+#
 class sc_apache::vhosts (
   $vhosts = {},
   $supervisor_init_script = '/etc/supervisor/supervisor-init-wrapper',

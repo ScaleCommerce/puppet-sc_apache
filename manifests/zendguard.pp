@@ -1,3 +1,29 @@
+# == Class: sc_apache::zendguard
+#
+# Installation of Zendguard Extension - dependent on php version
+#
+# === Variables
+#
+# [*sc_apache::zendguard::ensure*]
+#  values: link, absent - used to force deinstall of zendguard extension
+#
+# === Examples
+#
+# ---
+# classes:
+#   - sc_apache::zendguard
+#
+# sc_apache::zendguard:ensure: absent
+#
+#
+# === Authors
+#
+# Andreas Ziethen <az@scale.sc>
+#
+# === Copyright
+#
+# Copyright 2016 ScaleCommerce GmbH.
+#
 class sc_apache::zendguard(
   $ensure = 'installed',
 ) {

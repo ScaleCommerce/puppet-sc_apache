@@ -1,3 +1,30 @@
+# == Class: sc_apache::tideways
+#
+# Installation of Tideways Profiler Extension
+#
+# === Variables
+#
+# [*sc_apache::tideways::ensure*]
+#  values: link, absent - used to force deinstall of tideways extension
+#
+# === Examples
+#
+# ---
+# classes:
+#   - sc_apache::tideways
+#
+# sc_apache::tideways:ensure: absent
+#
+#
+# === Authors
+#
+# Andreas Ziethen <az@scale.sc>
+#
+# === Copyright
+#
+# Copyright 2016 ScaleCommerce GmbH.
+#
+
 class sc_apache::tideways (
   $ensure = 'installed',
 ){
