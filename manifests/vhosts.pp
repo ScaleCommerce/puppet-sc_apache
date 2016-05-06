@@ -37,7 +37,7 @@ class sc_apache::vhosts (
 
 
 
-  $vhost_defaults = hiera_hash('apache::vhosts_defaults', {})
+  $vhost_defaults = hiera_hash('sc_apache::vhosts_defaults', {})
 
   file {'/var/www/html':
     ensure => absent,
@@ -75,12 +75,12 @@ class sc_apache::vhosts (
 
   # iterate over vhosts and create docroots
   each($vhosts) |$name, $vhost| {
-  exec { "${name}-docroot":
-    command => "/bin/mkdir -p ${vhost['docroot']}",
-    creates => "${vhost['docroot']}",
-    before => Apache::Vhost["$name"],
+    exec { "${name}-docroot":
+      command => "/bin/mkdir -p ${vhost['docroot']}",
+      creates => "${vhost['docroot']}",
+      before => Apache::Vhost["$name"],
+    }
   }
-}
 
-create_resources('apache::vhost',$vhosts, $vhost_defaults)
+  create_resources('apache::vhost',$vhosts, $vhost_defaults)
 }

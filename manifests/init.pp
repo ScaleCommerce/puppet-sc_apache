@@ -83,7 +83,7 @@ class sc_apache (
   }
 
   class { '::sc_apache::vhosts':
-    vhosts      => hiera_hash('apache::vhosts', {}),
+    vhosts      => hiera_hash('sc_apache::vhosts', {}),
   }
   class { '::sc_apache::php': }
 }
