@@ -134,7 +134,7 @@ class sc_apache::php (
     require => [Package[$libapache_version], Apt::Ppa["ppa:$version_repo"]],
   }
 
-  $php_ini_settings = hiera_hash("sc_apache::php_ini_settings")
+  $php_ini_settings = hiera_hash("sc_apache::php_ini_settings", {})
   each($php_ini_settings) |$name, $value| {
     augeas { $name:
       notify  => Service['apache2'],
