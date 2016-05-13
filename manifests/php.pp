@@ -104,6 +104,8 @@ class sc_apache::php (
       }
     }
     '7.0': {
+      File['augeas_symlink'] -> Augeas <| |>
+
       apt::key {"ppa:$version_repo":
         ensure => present,
         id     => $repo_key_ondrej,
@@ -140,7 +142,7 @@ class sc_apache::php (
       notify  => Service['apache2'],
       context => "/files/etc/$php_etc_dir/apache2/php.ini/PUPPET_AUGEAS_OVERRIDES",
       changes => "set $name $value",
-      require => [Package[[$libapache_version, "$php_extension_name-cli"]], File['augeas_symlink']],
+      require => [Package[[$libapache_version, "$php_extension_name-cli"]]],
     }
   }
 }
