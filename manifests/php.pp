@@ -110,14 +110,14 @@ class sc_apache::php (
       }
       apt::ppa {"ppa:$version_repo":
         ensure => present,
-      }->
+      }
       file { 'augeas_symlink':
         ensure => link,
         path    => "/etc/$php_etc_dir",
         target  => "/etc/$php_etc_real_dir",
         owner   => 'root',
         group   => 'root',
-        before  => Augeas['php_ini'],
+        require => Package[$libapache_version],
       }
     }
     default: { fail('php_version has to be one of 5.4, 5.5, 5.6, 7.0') }
@@ -140,7 +140,7 @@ class sc_apache::php (
       notify  => Service['apache2'],
       context => "/files/etc/$php_etc_dir/apache2/php.ini/PUPPET_AUGEAS_OVERRIDES",
       changes => "set $name $value",
-      require => Package[[$libapache_version], "$php_extension_name-cli"],
+      require => [Package[[$libapache_version, "$php_extension_name-cli"]], File['augeas_symlink']],
     }
   }
 }
