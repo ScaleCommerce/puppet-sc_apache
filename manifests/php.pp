@@ -110,7 +110,7 @@ class sc_apache::php (
       }
       apt::ppa {"ppa:$version_repo":
         ensure => present,
-      }
+      }->
       file { 'augeas_symlink':
         ensure => link,
         path    => "/etc/$php_etc_dir",
