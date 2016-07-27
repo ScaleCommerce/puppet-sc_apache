@@ -60,6 +60,7 @@ class sc_apache (
   include apache::mod::autoindex
 
   ::apache::mod { 'access_compat': }
+  ::apache::mod { 'env': }
 
   # supervisor
   if $::virtual == 'docker' {
