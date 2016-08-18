@@ -34,11 +34,9 @@
 # Copyright 2016 ScaleCommerce GmbH.
 #
 class sc_apache (
-
+  $supervisor_init_script = '/etc/supervisor.init/supervisor-init-wrapper',
+  $supervisor_conf_script = '/etc/supervisor.d/apache2.conf',
 ){
-
-  $supervisor_init_script = '/etc/supervisor/supervisor-init-wrapper'
-  $supervisor_conf_script = '/etc/supervisor/conf.d/apache2.conf'
 
   include apache
   include apt
