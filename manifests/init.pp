@@ -36,6 +36,7 @@
 class sc_apache (
   $supervisor_init_script = '/etc/supervisor.init/supervisor-init-wrapper',
   $supervisor_conf_script = '/etc/supervisor.d/apache2.conf',
+  $supervisor_exec_path   = '/usr/local/bin',
 ){
 
   include apache
@@ -79,7 +80,7 @@ class sc_apache (
     }
 
     exec {'supervisorctl_update':
-      command => '/usr/bin/supervisorctl update',
+      command => "${supervisor_exec_path}/supervisorctl update",
       refreshonly => true,
     }
   }
