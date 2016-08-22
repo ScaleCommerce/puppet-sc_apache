@@ -79,7 +79,7 @@ class sc_apache (
       notify => Exec['supervisorctl_update'],
     }
 
-    exec {'supervisorctl_update':
+    exec {'supervisorctl_apache_update':
       command => "${supervisor_exec_path}/supervisorctl update",
       refreshonly => true,
     }
