@@ -76,7 +76,7 @@ class sc_apache (
       group   => 'root',
       mode    => '0644',
       content => template("${module_name}/apache.supervisor.conf.erb"),
-      notify => Exec['supervisorctl_update'],
+      notify => Exec['supervisorctl_apache_update'],
     }
 
     exec {'supervisorctl_apache_update':
