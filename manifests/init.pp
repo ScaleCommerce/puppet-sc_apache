@@ -88,7 +88,8 @@ class sc_apache (
   class { '::sc_apache::vhosts':
     vhosts      => hiera_hash('sc_apache::vhosts', {}),
   }
+  $sc_php_version = hiera('php::version', '5')
   class { '::sc_apache::php':
-    php_version => hiera('php::version'),
+    php_version => hiera('apache::mod::php::php_version', $sc_php_version),
   }
 }
