@@ -62,27 +62,25 @@ class sc_apache (
   ::apache::mod { 'env': }
 
   # supervisor
-  if $::virtual == 'docker' {
-    file { '/etc/init/apache2.conf':
-      ensure => absent,
-    }->
-    file { '/etc/init.d/apache2':
-      ensure => link,
-      target => $supervisor_init_script,
-    }
+  file { '/etc/init/apache2.conf':
+    ensure => absent,
+  }->
+  file { '/etc/init.d/apache2':
+    ensure => link,
+    target => $supervisor_init_script,
+  }
 
-    file { $supervisor_conf_script:
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template("${module_name}/apache.supervisor.conf.erb"),
-      notify => Exec['supervisorctl_apache_update'],
-    }
+  file { $supervisor_conf_script:
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/apache.supervisor.conf.erb"),
+    notify => Exec['supervisorctl_apache_update'],
+  }
 
-    exec {'supervisorctl_apache_update':
-      command => "${supervisor_exec_path}/supervisorctl update",
-      refreshonly => true,
-    }
+  exec {'supervisorctl_apache_update':
+    command => "${supervisor_exec_path}/supervisorctl update",
+    refreshonly => true,
   }
 
   class { '::sc_apache::vhosts':
