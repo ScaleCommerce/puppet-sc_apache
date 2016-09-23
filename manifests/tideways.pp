@@ -52,4 +52,23 @@ class sc_apache::tideways (
     require => [Package[$libapache_version], Apt::Source['tideways']],
     notify  => Service['apache2'],
   }
+
+  # supervisor
+  file { '/etc/init.d/tideways-daemon':
+    ensure => link,
+    target => $supervisor_init_script,
+  }
+
+  file { $supervisor_conf_script:
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/tideways.supervisor.conf.erb"),
+    notify => Exec['supervisorctl_tideways_update'],
+  }
+
+  exec {'supervisorctl_tideways_update':
+    command => "${supervisor_exec_path}/supervisorctl update",
+    refreshonly => true,
+  }
 }
