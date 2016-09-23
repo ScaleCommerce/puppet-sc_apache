@@ -56,10 +56,10 @@ class sc_apache::tideways (
   # supervisor
   file { '/etc/init.d/tideways-daemon':
     ensure => link,
-    target => $supervisor_init_script,
+    target => $sc_apache::supervisor_init_script,
   }
 
-  file { $supervisor_conf_script:
+  file { '/etc/supervisor.d/tideways-daemon.conf':
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
@@ -68,7 +68,7 @@ class sc_apache::tideways (
   }
 
   exec {'supervisorctl_tideways_update':
-    command => "${supervisor_exec_path}/supervisorctl update",
+    command => "${sc_apache::supervisor_exec_path}/supervisorctl update",
     refreshonly => true,
   }
 }
