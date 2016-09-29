@@ -128,6 +128,7 @@ class sc_apache::php (
   package {$libapache_version:
     ensure => installed,
     require => Apt::Ppa["ppa:$version_repo"],
+    notify  => Service['apache2'],
   }
 
   # install php modules
