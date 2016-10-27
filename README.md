@@ -84,11 +84,10 @@ sc_apache::php::ini_settings:
     max_execution_time: 1200
 
 sc_apache::php::modules:
-  - php-mysql
-  - php-gd
-  - php-mcrypt
-  - php-cli
-  - php-curl
-  - php-intl
-  - php-xsl
+  - mysql
+  - gd
+  - mcrypt
+  - curl
+  - intl
+  - xsl
 ```
