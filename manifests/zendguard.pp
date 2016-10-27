@@ -36,29 +36,27 @@ class sc_apache::zendguard(
     $zendguard_link_ensure = 'absent'
   }
 
+  $php_version       = $sc_apache::php::major_version
   $php_lib_path      = $sc_apache::php::php_lib_path
-  $php_version       = $sc_apache::php::php_version
-  $php_etc_dir       = $sc_apache::php::php_etc_dir
-  $libapache_version = $sc_apache::php::libapache_version
 
   # install zendguard
   file {"$php_lib_path/ZendGuardLoader.so":
     source  => "puppet:///modules/sc_apache/php-$php_version/ZendGuardLoader.so",
-    require => Package[$libapache_version],
+    require => Class['Apache::Mod::Php'],
     ensure => $zendguard_file_ensure,
   }->
-  file {"/etc/$php_etc_dir/mods-available/zendguard.ini":
+  file {"/etc/php-sc/mods-available/zendguard.ini":
     content => "zend_extension=$php_lib_path/ZendGuardLoader.so",
     ensure => $zendguard_file_ensure,
   }->
-  file {"/etc/$php_etc_dir/apache2/conf.d/02-zendguard.ini":
+  file {"/etc/php-sc/apache2/conf.d/02-zendguard.ini":
     ensure => $zendguard_link_ensure,
-    target => "/etc/$php_etc_dir/mods-available/zendguard.ini",
+    target => "/etc/php-sc/mods-available/zendguard.ini",
     notify => Service['apache2'],
   }->
-  file {"/etc/$php_etc_dir/cli/conf.d/02-zendguard.ini":
+  file {"/etc/php-sc/cli/conf.d/02-zendguard.ini":
     ensure => $zendguard_link_ensure,
-    target => "/etc/$php_etc_dir/mods-available/zendguard.ini",
+    target => "/etc/php-sc/mods-available/zendguard.ini",
   }
 
 }

@@ -8,26 +8,9 @@
 # [*apache::vhosts*]
 #  array with apache vhost config, needed to automaticaly build the docroots
 #
-# === Examples
-# hiera-Example:
-# ---
-# classes:
-#   - sc_apache
-#
-#  sc_apache::vhosts:
-#    default: # Default vhost matches all servernames which are not configured in any vhost
-#      docroot: /var/www/catchall/web
-#      default_vhost: true
-#    www.example.com: # Normal vhost
-#      server_aliases: ['example.com']
-#      docroot: /var/www/www.example.com/web
-#      override: ['All']
-#
-# for more examples regarding php config etc. see subclasses
-#
 # === Authors
 #
-# Andreas Ziethen <az@scale.sc>
+# Andreas Ziethen <az@scale.sc>, Thomas Lohner <tl@scale.sc>
 #
 # === Copyright
 #
@@ -39,9 +22,10 @@ class sc_apache (
   $supervisor_exec_path   = '/usr/local/bin',
 ){
 
+  Class['Apt::Update'] -> Class['Apache']
+
   include apache
   include apt
-  include apache::mod::php
   include apache::mod::rewrite
   include apache::mod::setenvif
   include apache::mod::auth_basic
@@ -86,8 +70,5 @@ class sc_apache (
   class { '::sc_apache::vhosts':
     vhosts      => hiera_hash('sc_apache::vhosts', {}),
   }
-  $sc_php_version = hiera('php::version', '5')
-  class { '::sc_apache::php':
-    php_version => hiera('apache::mod::php::php_version', $sc_php_version),
-  }
+
 }

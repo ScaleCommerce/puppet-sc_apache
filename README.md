@@ -35,7 +35,7 @@ You will need a working hiera-Setup (https://docs.puppetlabs.com/hiera/3.1/compl
 
 Check out our solultion for Puppet-Hiera-Roles (https://github.com/ScaleCommerce/puppet-hiera-roles).
 
-## Usage
+## Usage: Apache vhosts
 
 Put this into your node.yaml or role.yaml. See [Documentation of puppetlabs-apache](https://github.com/puppetlabs/puppetlabs-apache) for details on vhost syntax.
 ```
@@ -44,11 +44,51 @@ classes:
   - sc_apache
   
 sc_apache::vhosts:
-  default: # Default vhost matches all servernames which are not configured in any vhost
+  # Default vhost matches all servernames which are not configured in any vhost
+  default:
     docroot: /var/www/catchall/web
     default_vhost: true
-  www.example.com: # Normal vhost
+  # other vhosts
+  www.example.com:
     server_aliases: ['example.com']
     docroot: /var/www/www.example.com/web
     override: ['All']
+  # add php.ini settings per vhost
+  www.domain.de:
+    server_aliases: ['deomain.de']
+    docroot: /var/www/www.domain.de/web
+    override: ['All']
+    php_values:
+      tideways.api_key: 'xxx'
+      tideways.framework: 'shopware'
+```
+
+## Usage: PHP
+
+```
+classes:
+  - sc_apache
+  - sc_apache::php
+  - sc_apache::tideways
+  - sc_apache::zendopcache # this class installs zendopcache in php 5.4
+  - sc_apache::ioncube
+  - sc_apache::zendguard
+
+sc_apache::php::major_version: '5.6'
+sc_apache::php::ini_settings:
+  apache2:
+    session.gc_maxlifetime: 604800
+    error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE"
+    max_execution_time: 60
+  cli:
+    max_execution_time: 1200
+
+sc_apache::php::modules:
+  - php-mysql
+  - php-gd
+  - php-mcrypt
+  - php-cli
+  - php-curl
+  - php-intl
+  - php-xsl
 ```

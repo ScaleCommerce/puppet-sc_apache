@@ -30,13 +30,12 @@ class sc_apache::zendopcache (
 ){
 
   $php_lib_path      = $sc_apache::php::php_lib_path
-  $php_version       = $sc_apache::php::php_version
-  $php_etc_dir       = $sc_apache::php::php_etc_dir
-  $libapache_version = $sc_apache::php::libapache_version
-  $version_repo      = $sc_apache::php::version_repo
+  $php_version       = $sc_apache::php::major_version
 
-  # install zendopcache in php 5.4
-  if ($php_version == '5.4') {
+
+  case $php_version {
+
+    '5.4': {
 
     if($ensure == 'installed') {
       $opcache_ini_ensure = 'link'
@@ -46,7 +45,7 @@ class sc_apache::zendopcache (
 
     package {'php-pear':
       ensure => $ensure,
-      require => Apt::Ppa["ppa:$version_repo"],
+      require => Class['Apache::Mod::Php'],
     }->
     package {['build-essential', 'php5-dev']:
       ensure => $ensure,
@@ -55,27 +54,27 @@ class sc_apache::zendopcache (
       command => '/usr/bin/pecl install zendopcache',
       creates => "$php_lib_path/opcache.so",
     }->
-    file {"/etc/$php_etc_dir/mods-available/opcache.ini":
+    file {"/etc/php-sc/mods-available/opcache.ini":
       content => "zend_extension=$php_lib_path/opcache.so",
     }->
-    file {"/etc/$php_etc_dir/apache2/conf.d/03-opcache.ini":
+    file {"/etc/php-sc/apache2/conf.d/03-opcache.ini":
       ensure => $opcache_ini_ensure,
-      target => "/etc/$php_etc_dir/mods-available/opcache.ini",
+      target => "/etc/php-sc/mods-available/opcache.ini",
       notify => Service['apache2'],
     }->
-    file {"/etc/$php_etc_dir/cli/conf.d/03-opcache.ini":
+    file {"/etc/php-sc/cli/conf.d/03-opcache.ini":
       ensure => $opcache_ini_ensure,
-      target => "/etc/$php_etc_dir/mods-available/opcache.ini",
+      target => "/etc/php-sc/mods-available/opcache.ini",
     }
   }
-  # also replace opcache.so in php 5.5 and 5.6
-  if $php_version == '5.5' or $php_version == '5.6' {
+  '5.5', '5.6': {
     file {"$php_lib_path/opcache.so":
       source  => "puppet:///modules/sc_apache/php-$php_version/opcache.so",
-      require => Package[$libapache_version],
+      require => Class['Apache::Mod::Php'],
       notify  => Service['apache2'],
       owner   => root,
       group   => root,
     }
   }
+ }
 }

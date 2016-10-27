@@ -29,9 +29,8 @@ class sc_apache::ioncube(
 ) {
 
   $php_lib_path      = $sc_apache::php::php_lib_path
-  $php_version       = $sc_apache::php::php_version
+  $php_version       = $sc_apache::php::major_version
   $php_etc_dir       = $sc_apache::php::php_etc_dir
-  $libapache_version = $sc_apache::php::libapache_version
 
   # install ioncube
   if($ensure == 'link') {
@@ -41,20 +40,20 @@ class sc_apache::ioncube(
   }
   file {"$php_lib_path/ioncube_loader_lin_$php_version.so":
     source  => "puppet:///modules/sc_apache/php-$php_version/ioncube_loader_lin_$php_version.so",
-    require => Package[$libapache_version],
+    require => Package['httpd'],
     ensure => $ioncube_loader_ensure,
   }->
-  file {"/etc/$php_etc_dir/mods-available/ioncube.ini":
+  file {"/etc/php-sc/mods-available/ioncube.ini":
     content => "zend_extension=$php_lib_path/ioncube_loader_lin_$php_version.so",
     ensure => $ioncube_loader_ensure,
   }->
-  file {"/etc/$php_etc_dir/apache2/conf.d/01-ioncube.ini":
+  file {"/etc/php-sc/apache2/conf.d/01-ioncube.ini":
     ensure => $ensure,
-    target => "/etc/$php_etc_dir/mods-available/ioncube.ini",
+    target => "/etc/php-sc/mods-available/ioncube.ini",
     notify => Service['apache2'],
   }->
-  file {"/etc/$php_etc_dir/cli/conf.d/01-ioncube.ini":
+  file {"/etc/php-sc/cli/conf.d/01-ioncube.ini":
     ensure => $ensure,
-    target => "/etc/$php_etc_dir/mods-available/ioncube.ini",
+    target => "/etc/php-sc/mods-available/ioncube.ini",
   }
 }

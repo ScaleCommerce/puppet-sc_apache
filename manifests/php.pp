@@ -4,146 +4,115 @@
 #
 # === Variables
 #
-# [*php::version*]
-#  by now this may contain: 5.4, 5.5, 5.6, 7.0
+# [*major_version*]
+#  by now this may contain: 5.4, 5.5, 5.6, 7.0, 7.1
 #
-# === Examples
+# [*modules*]
+#  installs php modules
 #
-# ---
-# php::version: '5.6'
-#
-# php::modules:
-#   - php5-mysql
-#   - php5-gd
-#   - php5-mcrypt
-#   - php5-cli
-#   - php5-curl
-#   - php5-intl
-#   - php5-xsl
-#
-# sc_apache::php_ini_settings:
-#   max_execution_time: 1800
-#   memory_limit: 30M
+# [*ini_settings*]
+#  php.ini settings for 'apache2' and 'cli'
 #
 # === Authors
 #
-# Andreas Ziethen <az@scale.sc>
+# Andreas Ziethen <az@scale.sc>, Thomas Lohner <tl@scale.sc>
 #
 # === Copyright
 #
 # Copyright 2016 ScaleCommerce GmbH.
 #
 class sc_apache::php (
-  $php_version = '5.6',
-  $php_modules = hiera_array('php::modules', []),
+  $major_version = '5.6',
+  $modules = undef,
+  $ini_settings = undef,  
 ){
-  # set some variables an pathes which depend on php version
-  $version_repo = $php_version ? {
-    '5.4' => 'syseleven-platform/php54',
-    '5.5' => 'ondrej/php5',
-    '5.6' => 'ondrej/php5-5.6',
-    '7.0' => 'ondrej/php'
-  }
 
-  $repo_key_sys11   = 'C70320183C05E1E9F24532C87736223724911626'
-  $repo_key_ondrej  = '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C'
-
-  $php_lib_path = $php_version ? {
+$php_lib_path = $major_version ? {
     '5.4' => '/usr/lib/php5/20100525',
     '5.5' => '/usr/lib/php5/20121212',
     '5.6' => '/usr/lib/php5/20131226',
     '7.0' => '/usr/lib/php/20151012'
   }
 
-  case $php_version {
-    '7.0': {
-      $libapache_version  = 'libapache2-mod-php7.0'
-      $php_etc_dir        = 'php7'
-      $php_etc_real_dir   = 'php/7.0'
-      $php_extension_name = 'php7.0'
-    }
-    default: {
-      $libapache_version  = 'libapache2-mod-php5'
-      $php_etc_dir        = 'php5'
-      $php_extension_name = 'php5'
-    }
-  }
-
-  # set key and repository and install package
-  case $php_version {
+  case $major_version {
     '5.4': {
-      apt::ppa {['ppa:ondrej/php5-5.6', 'ppa:ondrej/php5']:
+      # remove other ppa
+      apt::ppa {'ppa:ondrej/php':
         ensure => absent,
       }
-      apt::key {"ppa:$version_repo":
+      # add specific ppa for major version
+      apt::key {'ppa:syseleven-platform/php54':
         ensure => present,
-        id     => $repo_key_sys11,
+        id     => 'C70320183C05E1E9F24532C87736223724911626',
       }
-      apt::ppa {"ppa:$version_repo":
+      apt::ppa {'ppa:syseleven-platform/php54':
         ensure => present,
       }
+      # set params for class apache::mod::php
+      $apache_mod_php_php_version = '5'
+      # set variables
+      $augeas_symlink_target = '/etc/php5'
     }
-    '5.5': {
-      apt::ppa {['ppa:ondrej/php5-5.6', 'ppa:syseleven-platform/php54']:
+    '5.5', '5.6', '7.0', '7.1': {
+      # remove other ppa
+      apt::ppa {'ppa:syseleven-platform/php54':
         ensure => absent,
       }
-      apt::ppa {"ppa:$version_repo":
+      # add specific ppa for major version
+      apt::key {'ppa:ondrej/php':
+        ensure => present,
+        id     => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
+      }
+      apt::ppa {'ppa:ondrej/php':
         ensure => present,
       }
+      # set params for class apache::mod::php
+      $apache_mod_php_php_version = $major_version
+      # set variables
+      $augeas_symlink_target = "/etc/php/$apache_mod_php_php_version"
     }
-    '5.6': {
-      apt::ppa {['ppa:syseleven-platform/php54', 'ppa:ondrej/php5']:
-        ensure => absent,
-      }
-      apt::key {"ppa:$version_repo":
-        ensure => present,
-        id     => $repo_key_ondrej,
-      }
-      apt::ppa {"ppa:$version_repo":
-        ensure => present,
-      }
-    }
-    '7.0': {
-      File['augeas_symlink'] -> Augeas <| |>
-
-      apt::key {"ppa:$version_repo":
-        ensure => present,
-        id     => $repo_key_ondrej,
-      }
-      apt::ppa {"ppa:$version_repo":
-        ensure => present,
-      }
-      file { 'augeas_symlink':
-        ensure => link,
-        path    => "/etc/$php_etc_dir",
-        target  => "/etc/$php_etc_real_dir",
-        owner   => 'root',
-        group   => 'root',
-        require => Package[$libapache_version],
-      }
-    }
-    default: { fail('php_version has to be one of 5.4, 5.5, 5.6, 7.0') }
+    default: { fail('php_version has to be one of 5.4, 5.5, 5.6, 7.0, 7.1') }
   }
 
-  package {$libapache_version:
+  package {"php${apache_mod_php_php_version}-cli":
     ensure => installed,
-    require => Apt::Ppa["ppa:$version_repo"],
+    require => Class['Apt::Update'],
+  }
+
+  class {'apache::mod::php':
+    php_version => $apache_mod_php_php_version,
+  }
+
+  # we need a symlink, because original augeas php.ini-lenses do not match on /etc/php/5.6/apache/php.ini
+  # see: http://augeas.net/stock_lenses.html
+  file { 'augeas_symlink':
+    ensure => link,
+    path    => "/etc/php-sc/",
+    target  => $augeas_symlink_target,
+    owner   => 'root',
+    group   => 'root',
+    require => Class['Apache::Mod::Php'],
+  }
+
+  # apply php ini setting
+  # info: apache will be restartet even if only cli settings are changed, needs better implementation
+  each($ini_settings) |$context, $items| {
+    each($items) |$name, $value| {
+      augeas { "$context-$name":
+        notify  => Service['apache2'],
+        context => "/files/etc/php-sc/$context/php.ini/PUPPET_AUGEAS_OVERRIDES",
+        changes => "set $name $value",
+        require => File['augeas_symlink'],
+      }
+    }
   }
 
   # install php modules
-  package { [$php_modules]:
-    ensure  => installed,
-    require => [Package[$libapache_version], Apt::Ppa["ppa:$version_repo"]],
-    notify  => Service['apache2'],
-  }
-
-  $php_ini_settings = hiera_hash("sc_apache::php_ini_settings", {})
-  each($php_ini_settings) |$name, $value| {
-    augeas { $name:
+  each($modules) |$name| {
+    package {"php${apache_mod_php_php_version}-$name":
+      ensure => installed,
+      require => Class['Apache::Mod::Php'],
       notify  => Service['apache2'],
-      context => "/files/etc/$php_etc_dir/apache2/php.ini/PUPPET_AUGEAS_OVERRIDES",
-      changes => "set $name $value",
-      require => [Package[[$libapache_version, "$php_extension_name-cli"]]],
     }
   }
 }

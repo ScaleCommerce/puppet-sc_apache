@@ -40,6 +40,7 @@ class sc_apache::vhosts (
   file {'/var/www/html':
     ensure => absent,
     force  => true,
+    require => Class['Apache']
   }
 
   file { '/var/www/localhost/opcache/':
