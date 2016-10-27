@@ -5,7 +5,7 @@
 #
 # === Variables
 #
-# [*apache::vhosts*]
+# [*vhosts*]
 #  array with apache vhost config, needed to automaticaly build the docroots
 #
 # === Authors
@@ -17,6 +17,8 @@
 # Copyright 2016 ScaleCommerce GmbH.
 #
 class sc_apache (
+  $vhosts = {},
+  $vhost_defaults = {},
   $supervisor_init_script = '/etc/supervisor.init/supervisor-init-wrapper',
   $supervisor_conf_script = '/etc/supervisor.d/apache2.conf',
   $supervisor_exec_path   = '/usr/local/bin',
@@ -59,16 +61,17 @@ class sc_apache (
     group   => 'root',
     mode    => '0644',
     content => template("${module_name}/apache.supervisor.conf.erb"),
-    notify => Exec['supervisorctl_apache_update'],
+    notify  => Exec['supervisorctl_apache_update'],
   }
 
   exec {'supervisorctl_apache_update':
-    command => "${supervisor_exec_path}/supervisorctl update",
+    command     => "${supervisor_exec_path}/supervisorctl update",
     refreshonly => true,
   }
 
-  class { '::sc_apache::vhosts':
-    vhosts      => hiera_hash('sc_apache::vhosts', {}),
+  class { 'sc_apache::vhosts':
+    vhosts         => $vhosts,
+    vhost_defaults => $vhost_defaults,
   }
 
 }

@@ -7,21 +7,6 @@
 # [*apache::vhosts*]
 #  array of vhost settings
 #
-# === Examples
-#
-# hiera-Example:
-# ---
-# classes:
-#   - sc_apache
-#
-#  sc_apache::vhosts:
-#    default: # Default vhost matches all servernames which are not configured in any vhost
-#      docroot: /var/www/catchall/web
-#      default_vhost: true
-#    www.example.com: # Normal vhost
-#      server_aliases: ['example.com']
-#      docroot: /var/www/www.example.com/web
-#      override: ['All']
 #
 # === Authors
 #
@@ -33,9 +18,8 @@
 #
 class sc_apache::vhosts (
   $vhosts = {},
+  $vhost_defaults = {},
 ){
-
-  $vhost_defaults = hiera_hash('sc_apache::vhosts_defaults', {})
 
   file {'/var/www/html':
     ensure => absent,
