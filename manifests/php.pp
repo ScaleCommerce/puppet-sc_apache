@@ -29,8 +29,8 @@ class sc_apache::php (
 
 $php_lib_path = $major_version ? {
     '5.4' => '/usr/lib/php5/20100525',
-    '5.5' => '/usr/lib/php5/20121212',
-    '5.6' => '/usr/lib/php5/20131226',
+    '5.5' => '/usr/lib/php/20121212',
+    '5.6' => '/usr/lib/php/20131226',
     '7.0' => '/usr/lib/php/20151012'
   }
 

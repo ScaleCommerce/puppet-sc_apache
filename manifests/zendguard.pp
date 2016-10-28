@@ -59,4 +59,17 @@ class sc_apache::zendguard(
     target => "/etc/php-sc/mods-available/zendguard.ini",
   }
 
+  # install opcache for zendguard loader
+  case $php_version {
+    '5.4', '5.5', '5.6': {
+      file {"$php_lib_path/opcache.so":
+        source  => "puppet:///modules/$module_name/php-$php_version/opcache.so",
+        require => Class['Apache::Mod::Php'],
+        notify  => Service['apache2'],
+        owner   => root,
+        group   => root,
+        mode    => '0644',
+      }
+    }
+  }
 }
