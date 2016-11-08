@@ -28,6 +28,8 @@ class sc_apache::zendguard(
   $ensure = 'installed',
 ) {
 
+  include apache::mod::php
+
   if($ensure == 'installed') {
     $zendguard_file_ensure = 'present'
     $zendguard_link_ensure = 'link'

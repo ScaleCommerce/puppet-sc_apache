@@ -29,6 +29,8 @@ class sc_apache::zendopcache (
   $ensure = 'installed',
 ){
 
+  include apache::mod::php
+
   $php_lib_path      = $sc_apache::php::php_lib_path
   $php_version       = $sc_apache::php::major_version
 
