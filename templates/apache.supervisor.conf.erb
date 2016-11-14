@@ -1,4 +1,4 @@
 [program:apache2]
-command=/bin/bash -c "source /etc/apache2/envvars && exec /usr/sbin/apache2 -DFOREGROUND"
+command=/bin/bash -c "mkdir -p /var/run/apache2 && source /etc/apache2/envvars && exec /usr/sbin/apache2 -DFOREGROUND"
 auto_start=true
 autorestart=true
