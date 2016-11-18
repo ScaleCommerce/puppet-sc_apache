@@ -46,6 +46,7 @@ class sc_apache (
 
   ::apache::mod { 'access_compat': }
   ::apache::mod { 'env': }
+  ::apache::mod { 'authz_groupfile': }
 
   # supervisor
   file { '/etc/init/apache2.conf':
