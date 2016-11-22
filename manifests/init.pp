@@ -23,6 +23,14 @@
 # [*modules*]
 #  array with apache modules to install
 #
+# === hiera example
+#
+# sc_apache::modules:
+#   - rewrite
+#   - auth_basic
+#   - deflate
+#   - ...
+#
 # === Authors
 #
 # Andreas Ziethen <az@scale.sc>, Thomas Lohner <tl@scale.sc>
