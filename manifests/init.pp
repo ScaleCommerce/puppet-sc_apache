@@ -33,7 +33,6 @@ class sc_apache (
   each($modules) |$name| {
     apache::mod {"$name":
       package_ensure => present,
-      require => Class['Apache::Mod'],
       notify  => Service['apache2'],
     }
   }
