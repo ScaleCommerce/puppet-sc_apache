@@ -30,7 +30,17 @@ class sc_apache (
   include apache
   include apt
 
-  create_resources('apache::mod',$modules, {})
+  each($modules) |$name| {
+    apache::mod {"$name":
+      package_ensure => present,
+      require => Class['Apache::Mod'],
+      notify  => Service['apache2'],
+    }
+  }
+
+
+
+#  create_resources('apache::mod',$modules, {})
 
 
 #  include apache::mod::rewrite
