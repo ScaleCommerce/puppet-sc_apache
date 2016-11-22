@@ -22,31 +22,36 @@ class sc_apache (
   $supervisor_init_script = '/etc/supervisor.init/supervisor-init-wrapper',
   $supervisor_conf_script = '/etc/supervisor.d/apache2.conf',
   $supervisor_exec_path   = '/usr/local/bin',
+  $modules                = {},
 ){
 
   Class['Apt::Update'] -> Class['Apache']
 
   include apache
   include apt
-  include apache::mod::rewrite
-  include apache::mod::setenvif
-  include apache::mod::auth_basic
-  include apache::mod::deflate
-  include apache::mod::expires
-  include apache::mod::headers
-  include apache::mod::remoteip
-  include apache::mod::status
-  include apache::mod::authz_user
-  include apache::mod::alias
-  include apache::mod::authn_core
-  include apache::mod::authn_file
-  include apache::mod::reqtimeout
-  include apache::mod::negotiation
-  include apache::mod::autoindex
 
-  ::apache::mod { 'access_compat': }
-  ::apache::mod { 'env': }
-  ::apache::mod { 'authz_groupfile': }
+  create_resources('apache::mod',$modules, {})
+
+
+#  include apache::mod::rewrite
+#  include apache::mod::setenvif
+#  include apache::mod::auth_basic
+#  include apache::mod::deflate
+#  include apache::mod::expires
+#  include apache::mod::headers
+#  include apache::mod::remoteip
+#  include apache::mod::status
+#  include apache::mod::authz_user
+#  include apache::mod::alias
+#  include apache::mod::authn_core
+#  include apache::mod::authn_file
+#  include apache::mod::reqtimeout
+#  include apache::mod::negotiation
+#  include apache::mod::autoindex
+#
+#  ::apache::mod { 'access_compat': }
+#  ::apache::mod { 'env': }
+#  ::apache::mod { 'authz_groupfile': }
 
   # supervisor
   file { '/etc/init/apache2.conf':
