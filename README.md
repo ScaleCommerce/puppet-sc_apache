@@ -22,6 +22,7 @@ This module uses hiera to configure Apache ressources.
 ### What sc_apache affects
 
 * apache
+* apache modules
 * supervisord
 * ZendGuard Loader
 * PHP OPCache
@@ -61,6 +62,28 @@ sc_apache::vhosts:
     php_values:
       tideways.api_key: 'xxx'
       tideways.framework: 'shopware'
+```
+
+## Usage: Apache Modules
+```
+sc_apache::modules:
+  - rewrite
+  - auth_basic
+  - deflate
+  - expires
+  - headers
+  - remoteip
+  - status
+  - authz_user
+  - authz_groupfile
+  - alias
+  - authn_core
+  - authn_file
+  - reqtimeout
+  - negotiation
+  - autoindex
+  - access_compat
+  - env
 ```
 
 ## Usage: PHP
