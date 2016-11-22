@@ -8,6 +8,21 @@
 # [*vhosts*]
 #  array with apache vhost config, needed to automaticaly build the docroots
 #
+# [*vhost_defaults*]
+#  array with apache vhost default params
+#
+# [*supervisor_init_script*]
+#  full path to supervisor init wrapper script
+#
+# [*supervisor_conf_script*
+#  full path to supervisor conf script
+#
+# [*supervisor_exec_path*]
+#  path to supervisor executable
+#
+# [*modules*]
+#  array with apache modules to install
+#
 # === Authors
 #
 # Andreas Ziethen <az@scale.sc>, Thomas Lohner <tl@scale.sc>
@@ -37,30 +52,6 @@ class sc_apache (
     }
   }
 
-
-
-#  create_resources('apache::mod',$modules, {})
-
-
-#  include apache::mod::rewrite
-#  include apache::mod::setenvif
-#  include apache::mod::auth_basic
-#  include apache::mod::deflate
-#  include apache::mod::expires
-#  include apache::mod::headers
-#  include apache::mod::remoteip
-#  include apache::mod::status
-#  include apache::mod::authz_user
-#  include apache::mod::alias
-#  include apache::mod::authn_core
-#  include apache::mod::authn_file
-#  include apache::mod::reqtimeout
-#  include apache::mod::negotiation
-#  include apache::mod::autoindex
-#
-#  ::apache::mod { 'access_compat': }
-#  ::apache::mod { 'env': }
-#  ::apache::mod { 'authz_groupfile': }
 
   # supervisor
   file { '/etc/init/apache2.conf':
