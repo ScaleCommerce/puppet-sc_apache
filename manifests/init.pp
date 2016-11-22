@@ -37,7 +37,7 @@ class sc_apache (
   $supervisor_init_script = '/etc/supervisor.init/supervisor-init-wrapper',
   $supervisor_conf_script = '/etc/supervisor.d/apache2.conf',
   $supervisor_exec_path   = '/usr/local/bin',
-  $modules                = {},
+  $modules                = undef,
 ){
 
   Class['Apt::Update'] -> Class['Apache']
@@ -45,10 +45,12 @@ class sc_apache (
   include apache
   include apt
 
-  each($modules) |$name| {
-    apache::mod {"$name":
-      package_ensure => present,
-      notify  => Service['apache2'],
+  if $modules {
+    each($modules) |$name| {
+      apache::mod { "$name":
+        package_ensure => present,
+        notify  => Service['apache2'],
+      }
     }
   }
 
