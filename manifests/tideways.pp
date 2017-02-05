@@ -64,11 +64,7 @@ class sc_apache::tideways (
     group   => 'root',
     mode    => '0644',
     content => template("${module_name}/tideways.supervisor.conf.erb"),
-    notify => Exec['supervisorctl_tideways_update'],
+    notify => Class[supervisord::reload],
   }
 
-  exec {'supervisorctl_tideways_update':
-    command => "${sc_apache::supervisor_exec_path}/supervisorctl update",
-    refreshonly => true,
-  }
 }
