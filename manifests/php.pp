@@ -109,7 +109,12 @@ $php_lib_path = $major_version ? {
 
   # install php modules
   each($modules) |$name| {
-    package {"php${apache_mod_php_php_version}-$name":
+    if $name == 'imagick' {
+      $extension_name = 'php5-imagick'
+    } else {
+      $extension_name = "php${apache_mod_php_php_version}-$name"
+    }
+    package { $extension_name:
       ensure => installed,
       require => Class['Apache::Mod::Php'],
       notify  => Service['apache2'],
