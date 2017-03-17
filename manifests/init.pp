@@ -22,6 +22,12 @@
 #
 # [*modules*]
 #  array with apache modules to install
+#  works only with modules which are covered by the orginal puppetlabs-apache module
+#  see here: https://github.com/puppetlabs/puppetlabs-apache/tree/master/manifests/mod
+#
+# [*custom_modules*]
+#  array with modules which are not covered by puppetlabs-apache module
+#  will be installed as package
 #
 # === hiera example
 #
@@ -46,6 +52,7 @@ class sc_apache (
   $supervisor_conf_script = '/etc/supervisor.d/apache2.conf',
   $supervisor_exec_path   = '/usr/local/bin',
   $modules                = undef,
+  $custom_modules         = undef,
 ){
 
   Class['Apt::Update'] -> Class['Apache']
@@ -53,12 +60,18 @@ class sc_apache (
   include apache
   include apt
 
-  if $modules {
-    each($modules) |$name| {
+  if $custom_modules {
+    each($custom_modules) |$name| {
       apache::mod { "$name":
         package_ensure => present,
         notify  => Service['apache2'],
       }
+    }
+  }
+  
+  if $modules {
+    each($modules) |$name| {
+       include "apache::mod::$name"
     }
   } else {
     include apache::mod::rewrite
