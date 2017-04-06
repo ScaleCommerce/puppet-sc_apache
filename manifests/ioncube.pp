@@ -28,7 +28,7 @@ class sc_apache::ioncube(
   $ensure = 'link',
 ) {
 
-  include sc_apaches::php
+  include sc_apache::php
 
   $php_lib_path      = $sc_apache::php::php_lib_path
   $php_version       = $sc_apache::php::major_version
