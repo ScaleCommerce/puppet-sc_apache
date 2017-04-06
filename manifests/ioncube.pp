@@ -28,9 +28,10 @@ class sc_apache::ioncube(
   $ensure = 'link',
 ) {
 
+  include sc_apaches::php
+
   $php_lib_path      = $sc_apache::php::php_lib_path
   $php_version       = $sc_apache::php::major_version
-  $php_etc_dir       = $sc_apache::php::php_etc_dir
 
   # install ioncube
   if($ensure == 'link') {
