@@ -73,7 +73,7 @@ $php_lib_path = $major_version ? {
       $augeas_symlink_target = "/etc/php/$apache_mod_php_php_version"
 
       # set cli-php version
-      file {''/etc/alternatives/php':
+      file {'/etc/alternatives/php':
         ensure => link,
         target => "/usr/bin/php$major_version",
       }
