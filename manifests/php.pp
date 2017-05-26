@@ -74,8 +74,9 @@ $php_lib_path = $major_version ? {
 
       # set cli-php version
       file {'/etc/alternatives/php':
-        ensure => link,
-        target => "/usr/bin/php$major_version",
+        ensure  => link,
+        target  => "/usr/bin/php$major_version",
+        require => Package["php$major_version-cli"],
       }
     }
     default: { fail('php_version has to be one of 5.4, 5.5, 5.6, 7.0, 7.1') }
