@@ -24,7 +24,7 @@
 class sc_apache::php (
   $major_version = '5.6',
   $modules = undef,
-  $ini_settings = undef,  
+  $ini_settings = undef,
 ){
 
 $php_lib_path = $major_version ? {
@@ -71,6 +71,12 @@ $php_lib_path = $major_version ? {
       $apache_mod_php_php_version = $major_version
       # set variables
       $augeas_symlink_target = "/etc/php/$apache_mod_php_php_version"
+
+      # set cli-php version
+      file {''/etc/alternatives/php':
+        ensure => link,
+        target => "/usr/bin/php$major_version",
+      }
     }
     default: { fail('php_version has to be one of 5.4, 5.5, 5.6, 7.0, 7.1') }
   }
