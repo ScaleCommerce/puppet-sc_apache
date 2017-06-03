@@ -1,7 +1,7 @@
 backends:
  - yaml
 :yaml:
- :datadir: /var/lib/hiera
+ :datadir: /builds/sc-puppet/puppet-sc_apache/test/hiera
 :hierarchy:
  - global
  - module

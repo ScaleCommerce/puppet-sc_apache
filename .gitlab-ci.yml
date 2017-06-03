@@ -8,5 +8,7 @@ test:
   - ln -sf test/hiera.yaml /etc/puppet/
   - ln -sf test/hiera /var/lib/hiera
   - puppet module install puppetlabs-apache
+  - puppet module install apt
+  - puppet module install logrotate
   - ln -sf /builds/sc-puppet/puppet-sc_apache /etc/puppet/modules/sc-apache
   - puppet apply -v test/site.pp
