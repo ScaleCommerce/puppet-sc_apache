@@ -1,0 +1,155 @@
+---
+sc::customer::network:  10.1.13.0/24
+
+###############################################################
+### Add your apache vhosts here                               #
+#                                                             #
+###############################################################
+sc_apache::vhosts:
+  localhost:
+    servername: localhost
+    docroot: /var/www/localhost
+    vhost_name: 'localhost'
+    priority: '01'
+    access_log: false
+    error_log: false
+    override: ['None']
+    docroot_owner: root
+    docroot_group: root
+  default_vhost:
+    servername: www.example.com
+    docroot: /var/www/www.example.com/web
+    override: ['All']
+    default_vhost: true
+
+###############################################################
+### Add your php settings here                                #
+#                                                             #
+# version: 5.4 / 5.5 / 5.6                                    #
+# ini-syntax: https://docs.puppetlabs.com/guides/augeas.html  #
+#                                                             #
+###############################################################
+sc_apache::php::major_version: '5.6'
+sc_apache::php::ini_settings:
+  apache2:
+    session.gc_maxlifetime: 604800
+    error_reporting: '"E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE"'
+    display_errors: Off
+    display_startup_errors: Off
+    log_errors: On
+    error_log: /var/log/apache2/error.log
+    opcache.error_log: /var/log/apache2/error.log
+    zend_loader.enable: 1
+    zend_loader.disable_licensing: 1
+    opcache.memory_consumption: 128
+    opcache.revalidate_freq: 1
+    opcache.max_accelerated_files: 5000
+    opcache.interned_strings_buffer: 16
+    opcache.fast_shutdown: 1
+    output_buffering: 16384
+    always_populate_raw_post_data: -1
+    max_execution_time: 600
+    upload_max_filesize: 12M
+    post_max_size: 12M
+
+###############################################################
+### You don't need to edit anything below here                #
+###############################################################
+classes:
+  - apt
+  - vm_config
+  - logrotate
+  - sc_apache
+  - sc_apache::php
+  - sc_apache::tideways
+#  - sc_apache::zendopcache # only with PHP 5.4
+#  - sc_apache::zendguard
+#  - sc_apache::ioncube
+
+
+###############################################################
+### Apache modules to install                                 #
+#                                                             #
+###############################################################
+sc_apache::modules:
+  - rewrite
+  - auth_basic
+  - deflate
+  - expires
+  - headers
+  - remoteip
+  - status
+  - authz_user
+  - alias
+  - authn_core
+  - authn_file
+  - reqtimeout
+  - negotiation
+  - autoindex
+  - env
+
+sc_apache::custom_modules:
+  - authz_groupfile
+  - access_compat
+
+apache::mpm_module: prefork
+apache::default_mods: false
+apache::default_vhost: false
+apache::mod::remoteip::header: 'X-Real-IP'
+apache::mod::remoteip::proxy_ips: ["%{hiera('sc::customer::network')}", '10.0.1.0/24', '10.99.0.0/24']
+apache::log_formats:
+  combined: '%a %l %u %t \"%r\" %>s %b \"%%{HIERA_ESCAPE_FIX}{Referer}i\" \"%%{HIERA_ESCAPE_FIX}{User-Agent}i\"'
+apache::mod::prefork::startservers: '6'
+apache::mod::prefork::minspareservers: '2'
+apache::mod::prefork::maxspareservers: '6'
+apache::mod::prefork::serverlimit: '64'
+apache::mod::prefork::maxclients: '64'
+apache::mod::prefork::maxrequestsperchild: '10000'
+apache::mod::mime::mime_types_additional:
+  'AddType':
+    application/x-httpd-php: '.php'
+
+
+sc_apache::vhost_defaults:
+  vhost_name: '*'
+  port: 80
+  access_log_file: access.log
+  error_log_file: error.log
+  override: ['Authconfig', 'Fileinfo']
+  docroot_owner: www-data
+  docroot_group: www-data
+  docroot_mode: '2775'
+  options: ['FollowSymLinks','MultiViews']
+  setenvif: 'X-Forwarded-Proto https HTTPS=on'
+
+
+sc_apache::php::modules:
+  - mysql
+  - gd
+  - mcrypt
+  - curl
+  - intl
+  - xml
+  - soap
+  - mbstring
+  - zip
+  - bz2
+  - bcmath
+  - sqlite3
+
+logrotate::rules:
+  apache2:
+    path: '/var/log/apache2/*log'
+    rotate: 14
+    rotate_every: 'day'
+    compress: true
+    missingok: true
+    delaycompress: false
+    ifempty: true
+    create: true
+    create_owner: 'root'
+    create_group: 'adm'
+    create_mode: '640'
+    sharedscripts: true
+    postrotate: 'if /etc/init.d/apache2 status > /dev/null ; then /usr/sbin/apache2ctl graceful > /dev/null; fi;'
+    prerotate: 'if [ -d /etc/logrotate.d/httpd-prerotate ]; then run-parts /etc/logrotate.d/httpd-prerotate; fi;'
