@@ -3,6 +3,5 @@ image: ubuntu:16.04
 test:
   script:
   - apt-get update
-  - apt-get -y install curl sudo
-  - apt-get install puppet
+  - apt-get -y install curl sudo puppet
   - curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
