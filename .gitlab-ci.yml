@@ -7,6 +7,7 @@ test:
   - gem install --no-rdoc --no-ri librarian-puppet
   - curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
   - ln -sf /builds/sc-puppet/puppet-sc_apache/test/hiera.yaml /etc/puppet/
+  - ln -sf /builds/sc-puppet/puppet-sc_apache/test/Puppetfile /etc/puppet/
   - ln -sf test/hiera /var/lib/hiera
   - cd /etc/puppet ; librarian-puppet install
   - ln -sf /builds/sc-puppet/puppet-sc_apache /etc/puppet/modules/sc-apache
