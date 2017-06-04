@@ -3,6 +3,7 @@
 
 forge "https://forgeapi.puppetlabs.com"
 
+mod 'puppetlabs-apt', '2.3.0'
 mod 'ajcrowe-supervisord',        :git => "https://github.com/ajcrowe/puppet-supervisord.git"
 mod 'puppetlabs-apache'
 mod 'saz-sudo'
