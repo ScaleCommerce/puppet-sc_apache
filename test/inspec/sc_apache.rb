@@ -1,4 +1,4 @@
-describe package('php5.6-cli') do
+describe package('php${php_major_version}-cli') do
  it { should be_installed }
 end
 describe service('apache2') do

@@ -12,8 +12,8 @@ test:
   - ln -sf /builds/sc-puppet/puppet-sc_apache /etc/puppet/modules/sc_apache
   - cd /etc/puppet ; librarian-puppet install
   - curl https://gitlab.scale.sc/scalecommerce/postinstall/raw/master/puppet.conf.sample > /etc/puppet/puppet.conf
-  - puppet config set certname puppet-test.scalecommerce
-  - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
   - sed -e "s/\${php_major_version}/5.6/" /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
   - sed -e "s/\${php_major_version}/5.6/" /builds/sc-puppet/puppet-sc_apache/test/hiera/module.yaml
+  - puppet config set certname puppet-test.scalecommerce
+  - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
   - inspec exec /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
