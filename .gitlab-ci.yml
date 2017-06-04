@@ -1,19 +1,28 @@
 image: scalecommerce/base:0.6
 
-test:
+test:5.5:
   script:
-  - apt-get update
-  - apt-get -y install curl sudo puppet ruby1.9.1-dev make gcc nano software-properties-common rsync git dnsutils unzip whois python-software-properties python-pip psmisc
-  - gem install --no-rdoc --no-ri librarian-puppet
-  - curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
-  - ln -sf /builds/sc-puppet/puppet-sc_apache/test/hiera.yaml /etc/puppet/
-  - ln -sf /builds/sc-puppet/puppet-sc_apache/test/Puppetfile /etc/puppet/
-  - ln -sf /builds/sc-puppet/puppet-sc_apache/test/hiera /var/lib/hiera
-  - ln -sf /builds/sc-puppet/puppet-sc_apache /etc/puppet/modules/sc_apache
-  - cd /etc/puppet ; librarian-puppet install
-  - curl https://gitlab.scale.sc/scalecommerce/postinstall/raw/master/puppet.conf.sample > /etc/puppet/puppet.conf
+  - /builds/sc-puppet/puppet-sc_apache/test/install.sh
+  - sed -i -e "s/\${php_major_version}/5.5/" /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/5.5/" /builds/sc-puppet/puppet-sc_apache/test/hiera/module.yaml
+  - puppet config set certname puppet-test.scalecommerce
+  - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
+  - inspec exec /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
+
+test:5.6:
+  script:
+  - /builds/sc-puppet/puppet-sc_apache/test/install.sh
   - sed -i -e "s/\${php_major_version}/5.6/" /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/5.6/" /builds/sc-puppet/puppet-sc_apache/test/hiera/module.yaml
+  - puppet config set certname puppet-test.scalecommerce
+  - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
+  - inspec exec /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
+
+test:7.0:
+  script:
+  - /builds/sc-puppet/puppet-sc_apache/test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.0/" /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.0/" /builds/sc-puppet/puppet-sc_apache/test/hiera/module.yaml
   - puppet config set certname puppet-test.scalecommerce
   - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
   - inspec exec /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
