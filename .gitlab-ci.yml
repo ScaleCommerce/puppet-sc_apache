@@ -3,7 +3,7 @@ image: scalecommerce/base:0.6
 test:5.5:
   script:
   - /builds/sc-puppet/puppet-sc_apache/test/install.sh
-  - sed -i -e "s/\${php_major_version}/5.5/" /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/5/" /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/5.5/" /builds/sc-puppet/puppet-sc_apache/test/hiera/module.yaml
   - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
   - inspec exec /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
@@ -21,5 +21,13 @@ test:7.0:
   - /builds/sc-puppet/puppet-sc_apache/test/install.sh
   - sed -i -e "s/\${php_major_version}/7.0/" /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/7.0/" /builds/sc-puppet/puppet-sc_apache/test/hiera/module.yaml
+  - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
+  - inspec exec /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
+
+test:7.1:
+  script:
+  - /builds/sc-puppet/puppet-sc_apache/test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.1/" /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.1/" /builds/sc-puppet/puppet-sc_apache/test/hiera/module.yaml
   - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
   - inspec exec /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
