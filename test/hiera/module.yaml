@@ -57,7 +57,7 @@ sc_apache::php::ini_settings:
 ###############################################################
 classes:
   - apt
-  - vm_config
+#  - vm_config
   - logrotate
   - sc_apache
   - sc_apache::php
