@@ -1,14 +1,14 @@
-image: ubuntu:16.04
+image: ubuntu:14.04
 
 test:
   script:
   - apt-get update
-  - apt-get -y install curl sudo puppet
+  - apt-get -y install curl sudo puppet ruby1.9.1-dev make gcc
+  - gem install --no-rdoc --no-ri librarian-puppet
   - curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
-  - ln -sf test/hiera.yaml /etc/puppet/hiera.yaml
+  - ln -sf /builds/sc-puppet/puppet-sc_apache/test/hiera.yaml /etc/puppet/
   - ln -sf test/hiera /var/lib/hiera
-  - puppet module install puppetlabs-apache
-  - puppet module install puppetlabs-apt
-  - puppet module install yo61-logrotate
+  - cd /etc/puppet ; librarian-puppet install
   - ln -sf /builds/sc-puppet/puppet-sc_apache /etc/puppet/modules/sc-apache
+  - curl https://gitlab.scale.sc/scalecommerce/postinstall/raw/master/puppet.conf.sample > /etc/puppet/puppet.conf
   - puppet apply -v test/site.pp
