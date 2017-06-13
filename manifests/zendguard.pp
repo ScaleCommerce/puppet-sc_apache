@@ -63,7 +63,7 @@ class sc_apache::zendguard(
 
   # install opcache for zendguard loader
   case $php_version {
-    '5.5', '5.6': {
+    '5.6': {
       file {"$php_lib_path/opcache.so":
         source  => "puppet:///modules/$module_name/php-$php_version/opcache.so",
         require => Class['Apache::Mod::Php'],
