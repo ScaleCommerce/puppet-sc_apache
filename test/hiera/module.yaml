@@ -137,6 +137,11 @@ sc_apache::php::modules:
   - bcmath
   - sqlite3
 
+packages:
+  php-memcached:
+    ensure: installed
+    notify: Service[httpd]
+
 logrotate::rules:
   apache2:
     path: '/var/log/apache2/*log'

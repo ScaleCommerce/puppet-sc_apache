@@ -1,4 +1,6 @@
 #!/bin/bash
+sed -i -e "s/nodaemon=true/nodaemon=false/" /etc/supervisord.conf
+/usr/local/bin/supervisord -c /etc/supervisord.conf
 apt-get update
 apt-get -y install curl sudo puppet ruby1.9.1-dev make gcc nano software-properties-common rsync git dnsutils unzip whois python-software-properties python-pip psmisc
 gem install --no-rdoc --no-ri librarian-puppet

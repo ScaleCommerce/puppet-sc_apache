@@ -114,6 +114,16 @@ $php_lib_path = $major_version ? {
     }
   }
 
+  # create files for debugging / testing
+  file {'/var/www/localhost/info.php':
+    source => "puppet:///modules/sc_apache/info.php",
+    notify => Service['apache2'],
+  }
+  file {'/var/www/localhost/extensions.php':
+    source => "puppet:///modules/sc_apache/extensions.php",
+    notify => Service['apache2'],
+  }
+
   # install php modules
   each($modules) |$name| {
     if $name == 'imagick' {
