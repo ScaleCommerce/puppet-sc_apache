@@ -1,4 +1,6 @@
-image: scalecommerce/base:0.6
+image:
+  name: scalecommerce/base:0.6
+  entrypoint: /usr/local/bin/supervisord -c /etc/supervisord.conf
 
 test:5.4:
   script:
