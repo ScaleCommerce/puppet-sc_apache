@@ -69,7 +69,7 @@ class sc_apache::zendopcache (
       target => "/etc/php-sc/mods-available/opcache.ini",
     }
   }
-  '5.5', '5.6': {
+  '5.6': {
     file {"$php_lib_path/opcache.so":
       source  => "puppet:///modules/sc_apache/php-$php_version/opcache.so",
       require => Class['Apache::Mod::Php'],

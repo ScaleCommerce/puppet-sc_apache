@@ -5,7 +5,7 @@
 # === Variables
 #
 # [*major_version*]
-#  by now this may contain: 5.4, 5.5, 5.6, 7.0, 7.1
+#  by now this may contain: 5.4, 5.6, 7.0, 7.1
 #
 # [*modules*]
 #  installs php modules
@@ -29,7 +29,6 @@ class sc_apache::php (
 
 $php_lib_path = $major_version ? {
     '5.4' => '/usr/lib/php5/20100525',
-    '5.5' => '/usr/lib/php/20121212',
     '5.6' => '/usr/lib/php/20131226',
     '7.0' => '/usr/lib/php/20151012',
     '7.1' => '/usr/lib/php/20160303'
@@ -54,7 +53,7 @@ $php_lib_path = $major_version ? {
       # set variables
       $augeas_symlink_target = '/etc/php5'
     }
-    '5.5', '5.6', '7.0', '7.1': {
+    '5.6', '7.0', '7.1': {
       # remove other ppa
       apt::ppa {'ppa:syseleven-platform/php54':
         ensure => absent,
@@ -79,7 +78,7 @@ $php_lib_path = $major_version ? {
         require => Package["php$major_version-cli"],
       }
     }
-    default: { fail('php_version has to be one of 5.4, 5.5, 5.6, 7.0, 7.1') }
+    default: { fail('php_version has to be one of 5.4, 5.6, 7.0, 7.1') }
   }
 
   package {"php${apache_mod_php_php_version}-cli":

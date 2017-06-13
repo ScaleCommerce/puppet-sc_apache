@@ -8,14 +8,6 @@ test:5.4:
   - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
   - inspec exec /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
 
-test:5.5:
-  script:
-  - /builds/sc-puppet/puppet-sc_apache/test/install.sh
-  - sed -i -e "s/\${php_major_version}/5/" /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/5.5/" /builds/sc-puppet/puppet-sc_apache/test/hiera/module.yaml
-  - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
-  - inspec exec /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
-
 test:5.6:
   script:
   - /builds/sc-puppet/puppet-sc_apache/test/install.sh
@@ -23,6 +15,7 @@ test:5.6:
   - sed -i -e "s/\${php_major_version}/5.6/" /builds/sc-puppet/puppet-sc_apache/test/hiera/module.yaml
   - puppet apply -v /builds/sc-puppet/puppet-sc_apache/test/site.pp
   - inspec exec /builds/sc-puppet/puppet-sc_apache/test/inspec/sc_apache.rb
+  - sleep 1800
 
 test:7.0:
   script:
