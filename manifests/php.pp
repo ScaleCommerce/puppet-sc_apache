@@ -54,7 +54,7 @@ $php_lib_path = $major_version ? {
       $augeas_symlink_target = '/etc/php5'
 
       # install ppa before packages
-      Apt:ppa['ppa:syseleven-platform/php54'] -> Package <| |>
+      Apt::ppa['ppa:syseleven-platform/php54'] -> Package <| |>
 
     }
     '5.6', '7.0', '7.1': {
@@ -83,7 +83,7 @@ $php_lib_path = $major_version ? {
       }
 
       # install ppa before packages
-      Apt:ppa['ppa:ondrej/php'] -> Package <| |>
+      Apt::ppa['ppa:ondrej/php'] -> Package <| |>
     }
     default: { fail('php_version has to be one of 5.4, 5.6, 7.0, 7.1') }
   }
