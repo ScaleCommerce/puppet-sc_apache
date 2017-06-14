@@ -52,6 +52,10 @@ $php_lib_path = $major_version ? {
       $apache_mod_php_php_version = '5'
       # set variables
       $augeas_symlink_target = '/etc/php5'
+
+      # install ppa before packages
+      Apt:ppa['ppa:syseleven-platform/php54'] -> Package <| |>
+
     }
     '5.6', '7.0', '7.1': {
       # remove other ppa
@@ -77,6 +81,9 @@ $php_lib_path = $major_version ? {
         target  => "/usr/bin/php$major_version",
         require => Package["php$major_version-cli"],
       }
+
+      # install ppa before packages
+      Apt:ppa['ppa:ondrej/php'] -> Package <| |>
     }
     default: { fail('php_version has to be one of 5.4, 5.6, 7.0, 7.1') }
   }

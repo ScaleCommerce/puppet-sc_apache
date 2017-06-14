@@ -141,7 +141,6 @@ packages:
   php-memcached:
     ensure: installed
     notify: Service[apache2]
-    require: Ppa[ppa:ondrej/php]
 
 logrotate::rules:
   apache2:
