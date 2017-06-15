@@ -45,16 +45,12 @@ $php_lib_path = $major_version ? {
         ensure => present,
         id     => 'C70320183C05E1E9F24532C87736223724911626',
       }
-      apt::ppa {'ppa:syseleven-platform/php54':
-        ensure => present,
-      }
+      $ppa = 'ppa:syseleven-platform/php54'
+
       # set params for class apache::mod::php
       $apache_mod_php_php_version = '5'
       # set variables
       $augeas_symlink_target = '/etc/php5'
-
-      # install ppa before packages
-      Apt::ppa['ppa:syseleven-platform/php54'] -> Package <| |>
 
     }
     '5.6', '7.0', '7.1': {
@@ -67,9 +63,8 @@ $php_lib_path = $major_version ? {
         ensure => present,
         id     => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
       }
-      apt::ppa {'ppa:ondrej/php':
-        ensure => present,
-      }
+      $ppa ='ppa:ondrej/php'
+
       # set params for class apache::mod::php
       $apache_mod_php_php_version = $major_version
       # set variables
@@ -81,9 +76,6 @@ $php_lib_path = $major_version ? {
         target  => "/usr/bin/php$major_version",
         require => Package["php$major_version-cli"],
       }
-
-      # install ppa before packages
-      Apt::ppa['ppa:ondrej/php'] -> Package <| |>
     }
     default: { fail('php_version has to be one of 5.4, 5.6, 7.0, 7.1') }
   }
@@ -91,6 +83,12 @@ $php_lib_path = $major_version ? {
   package {"php${apache_mod_php_php_version}-cli":
     ensure => installed,
     require => Class['Apt::Update'],
+  }
+
+  # install ppa before packages
+  Apt::ppa[$ppa] -> Package <| |>
+  apt::ppa {$ppa:
+    ensure => present,
   }
 
   class {'apache::mod::php':
