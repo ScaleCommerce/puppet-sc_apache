@@ -86,7 +86,7 @@ $php_lib_path = $major_version ? {
   }
 
   # install ppa before packages
-  Apt::ppa[$ppa] -> Package <| |>
+  Apt::Ppa[$ppa] -> Package <| |>
   apt::ppa {$ppa:
     ensure => present,
   }
