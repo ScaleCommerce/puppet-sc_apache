@@ -97,6 +97,10 @@ class sc_apache::php_default (
     source => "puppet:///modules/sc_apache/extensions.php",
     notify => Service['apache2'],
   }
+  file {'/var/www/localhost/version.php':
+    source => "puppet:///modules/sc_apache/version.php",
+    notify => Service['apache2'],
+  }
 
   # install php modules
   each($modules) |$name| {
