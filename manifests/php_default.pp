@@ -22,7 +22,7 @@
 # Copyright 2016 ScaleCommerce GmbH.
 #
 class sc_apache::php_default (
-  $major_version  = $sc_apache::php::php_major_version,
+  $major_version  = $sc_apache::php::major_version,
   $modules        = $sc_apache::php::modules,
   $ini_settings   = $sc_apache::php::ini_settings,
 ){
