@@ -33,7 +33,7 @@ class sc_apache::php (
       }
     }
     '5.6', '7.0', '7.1': {
-      class{'sc_apache::php-default':
+      class{'sc_apache::php_default':
       }
     }
     default: { fail('php_version has to be one of 5.4, 5.6, 7.0, 7.1') }
