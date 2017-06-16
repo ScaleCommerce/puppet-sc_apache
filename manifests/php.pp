@@ -29,11 +29,11 @@ class sc_apache::php (
 
   case $major_version {
     '5.4': {
-      class{':sc_apache::php54':
+      class{'sc_apache::php54':
       }
     }
     '5.6', '7.0', '7.1': {
-      class{':sc_apache::php-default':
+      class{'sc_apache::php-default':
       }
     }
     default: { fail('php_version has to be one of 5.4, 5.6, 7.0, 7.1') }

@@ -46,7 +46,6 @@ $php_lib_path = '/usr/lib/php5/20100525'
       $apache_mod_php_php_version = '5'
       # set variables
       $augeas_symlink_target = '/etc/php5'
-
     }
 
   package {"php${apache_mod_php_php_version}-cli":
