@@ -136,11 +136,7 @@ sc_apache::php::modules:
   - bz2
   - bcmath
   - sqlite3
-
-packages:
-  php-memcached:
-    ensure: installed
-    notify: Service[apache2]
+  - memcached
 
 logrotate::rules:
   apache2:
