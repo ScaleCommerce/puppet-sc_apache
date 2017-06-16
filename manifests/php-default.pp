@@ -107,6 +107,7 @@ class sc_apache::php-default (
       }
       default: {
         $extension_name = "php${major_version}-$name"
+      }
     }
     package { $extension_name:
       ensure => installed,
