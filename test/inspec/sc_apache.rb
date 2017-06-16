@@ -23,6 +23,17 @@ describe http('http://localhost/info.php') do
   its('status') { should cmp 200 }
 end
 
+# apache php version correct?
+describe http('http://localhost/phpversion.php') do
+  its('body') { should match '^${php_major_version}' }
+end
+
+# php-cli version correct?
+describe command('php -r "echo phpversion();"') do
+  its('stdout') { should match '^${php_major_version}' }
+end
+
+
 # memcached-extension enabled in cli?
 describe command('php -m | grep memcached') do
  its('exit_status') { should eq 0 }
