@@ -68,7 +68,7 @@ class sc_apache (
       }
     }
   }
-  
+
   if $modules {
     each($modules) |$name| {
        include "apache::mod::$name"

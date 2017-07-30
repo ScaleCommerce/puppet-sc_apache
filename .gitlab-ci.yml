@@ -1,33 +1,42 @@
 image: scalecommerce/base:0.6
 
-test:5.4:
+stages:
+  - Puppet 3
+  - Puppet 4
+  - Puppet 5
+  - push2github
+
+test:5.6:
+  stage: Puppet 3
   script:
   - ./test/install.sh
   - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
   - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-
-test:5.6:
-  script:
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
 
 test:7.0:
+  stage: Puppet 3
   script:
   - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
+  - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
 
 test:7.1:
+  stage: Puppet 3
   script:
   - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
+  - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
+
+push2github:
+  stage: push2github
+  script:
+    - git push --mirror https://$GITHUB_TOKEN@github.com/ScaleCommerce/puppet-sc_apache.git

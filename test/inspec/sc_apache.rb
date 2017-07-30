@@ -24,7 +24,7 @@ describe http('http://localhost/info.php') do
 end
 
 # apache php version correct?
-describe http('http://localhost/phpversion.php') do
+describe http('http://localhost/version.php') do
   its('body') { should match '^${php_major_version}' }
 end
 
