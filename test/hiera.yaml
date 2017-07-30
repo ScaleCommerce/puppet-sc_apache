@@ -1,7 +1,8 @@
 backends:
  - yaml
 :yaml:
- :datadir: /builds/sc-puppet/puppet-sc_apache/test/hiera
+ :datadir: "%{settings::confdir}/hieradata"
 :hierarchy:
- - global
+ - override
  - module
+ - common

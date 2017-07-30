@@ -56,8 +56,6 @@ sc_apache::php::ini_settings:
 ### You don't need to edit anything below here                #
 ###############################################################
 classes:
-  - apt
-#  - vm_config
   - logrotate
   - sc_apache
   - sc_apache::php

@@ -1,3 +1,5 @@
+[![build status](https://gitlab.scale.sc/sc-puppet/puppet-sc_apache/badges/master/build.svg)](https://gitlab.scale.sc/sc-puppet/puppet-sc_apache/commits/master)
+
 # sc_apache
 
 #### Table of Contents
@@ -43,7 +45,7 @@ Put this into your node.yaml or role.yaml. See [Documentation of puppetlabs-apac
 ---
 classes:
   - sc_apache
-  
+
 sc_apache::vhosts:
   # Default vhost matches all servernames which are not configured in any vhost
   default:
