@@ -59,8 +59,7 @@ classes:
   - logrotate
   - sc_apache
   - sc_apache::php
-#  - sc_apache::tideways
-#  - sc_apache::zendopcache # only with PHP 5.4
+  - sc_apache::tideways
 #  - sc_apache::zendguard
 #  - sc_apache::ioncube
 

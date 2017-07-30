@@ -39,7 +39,7 @@ class sc_apache::tideways (
   apt::key {'tideways':
     ensure => $apt_ensure,
     id     => '6A75A7C5E23F3B3B6AAEEB1411CD8CFCEEB5E8F4',
-    source => 'https://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages/EEB5E8F4.gpg',
+    #source => 'https://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages/EEB5E8F4.gpg',
   }
   apt::source {'tideways':
     ensure   => $apt_ensure,
