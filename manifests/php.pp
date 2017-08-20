@@ -88,23 +88,20 @@ class sc_apache::php (
   # create files for debugging / testing
   file {'/var/www/localhost/info.php':
     source => "puppet:///modules/sc_apache/info.php",
-    notify => Service['apache2'],
   }
   file {'/var/www/localhost/extensions.php':
     source => "puppet:///modules/sc_apache/extensions.php",
-    notify => Service['apache2'],
   }
   file {'/var/www/localhost/version.php':
     source => "puppet:///modules/sc_apache/version.php",
-    notify => Service['apache2'],
   }
 
   # install php modules
   each($modules) |$name| {
     case $name {
       # some extension package are prefixed "php-" indtead of "php5.6-"
-      'imagick, redis, memcached': {
-        $extension_name = 'php-$name'
+      'imagick', 'redis', 'memcached': {
+        $extension_name = "php-$name"
       }
       default: {
         $extension_name = "php${major_version}-$name"
@@ -113,7 +110,7 @@ class sc_apache::php (
     package { $extension_name:
       ensure => installed,
       require => [Class['Apache::Mod::Php'],Class['Apt::Update']],
-      notify  => Service['apache2'],
+      notify  => Service['httpd'],
     }
   }
 }
