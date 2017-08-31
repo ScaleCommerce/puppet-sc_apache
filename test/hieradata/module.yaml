@@ -86,6 +86,7 @@ sc_apache::modules:
   - env
   - access_compat
 
+# the following is not needed any longer but used here for testing compatibility to old yaml files
 sc_apache::custom_modules:
   - authz_groupfile
 
