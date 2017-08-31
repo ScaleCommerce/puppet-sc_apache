@@ -42,3 +42,13 @@ end
 describe command('curl -s http://localhost/extensions.php | grep memcached') do
  its('exit_status') { should eq 0 }
 end
+
+# common module (example: status module) enabled in apache?
+describe command('apache2ctl -M | grep status_module') do
+  its('exit_status') { should eq 0 }
+end
+
+# custom module (example: access_compat) enabled in apache?
+describe command('apache2ctl -M | grep access_compat_module') do
+  its('exit_status') { should eq 0 }
+end

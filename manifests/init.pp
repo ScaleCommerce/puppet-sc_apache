@@ -61,17 +61,29 @@ class sc_apache (
   include apt
 
   if $custom_modules {
-    each($custom_modules) |$name| {
-      apache::mod { "$name":
-        package_ensure => present,
-        notify  => Service['apache2'],
-      }
+    if $modules {
+      $tmp_modules = [$modules, $custom_modules]
+      $allmodules = unique(flatten($tmp_modules))
+    } else {
+      $allmodules = $custom_modules
+    }
+  } else {
+    if $modules {
+      $allmodules = $modules
     }
   }
 
-  if $modules {
-    each($modules) |$name| {
-       include "apache::mod::$name"
+
+  if $allmodules {
+    each($allmodules) |$name| {
+      if defined( "apache::mod::${name}") {
+        include "apache::mod::$name"
+      } else {
+        apache::mod { "$name":
+          package_ensure => present,
+          notify  => Service['apache2'],
+        }
+      }
     }
   } else {
     include apache::mod::rewrite

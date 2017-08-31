@@ -84,10 +84,10 @@ sc_apache::modules:
   - negotiation
   - autoindex
   - env
+  - access_compat
 
 sc_apache::custom_modules:
   - authz_groupfile
-  - access_compat
 
 apache::mpm_module: prefork
 apache::default_mods: false
