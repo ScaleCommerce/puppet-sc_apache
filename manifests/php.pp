@@ -100,7 +100,7 @@ class sc_apache::php (
   each($modules) |$name| {
     case $name {
       # some extension package are prefixed "php-" instead of "php5.6-"
-      'imagick', 'redis', 'memcached', 'geoip': {
+      'imagick', 'redis', 'memcached', 'geoip', 'simplexml', 'dom': {
         $extension_name = "php-$name"
       }
       default: {
