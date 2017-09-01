@@ -99,8 +99,8 @@ class sc_apache::php (
   # install php modules
   each($modules) |$name| {
     case $name {
-      # some extension package are prefixed "php-" indtead of "php5.6-"
-      'imagick', 'redis', 'memcached': {
+      # some extension package are prefixed "php-" instead of "php5.6-"
+      'imagick', 'redis', 'memcached', 'geoip': {
         $extension_name = "php-$name"
       }
       default: {
