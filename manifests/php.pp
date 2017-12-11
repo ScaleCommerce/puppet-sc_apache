@@ -92,6 +92,7 @@ class sc_apache::php (
       owner   => 'root',
       group   => 'root',
       require => Class['Apache::Mod::Php'],
+    }
   } else {
     file { 'augeas_symlink':
       ensure  => link,
