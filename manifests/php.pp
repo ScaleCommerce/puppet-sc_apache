@@ -23,42 +23,63 @@
 # Copyright 2016 ScaleCommerce GmbH.
 #
 class sc_apache::php (
-  Enum["5.5", "5.6", "7.0", "7.1"] $major_version  = "5.6",
+  Enum["5.4", "5.5", "5.6", "7.0", "7.1"] $major_version  = "5.6",
   $modules,
   $ini_settings,
 ){
 
   $php_lib_path = $major_version ? {
+    '5.4' => '/usr/lib/php5/20100525',
     '5.6' => '/usr/lib/php/20131226',
     '7.0' => '/usr/lib/php/20151012',
     '7.1' => '/usr/lib/php/20160303'
   }
 
-  # add default ppa
-  apt::key {'ppa:ondrej/php':
-    ensure => present,
-    id     => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
-  }
-  apt::ppa {'ppa:ondrej/php':
-    ensure => present,
+  if ($major_version == '5.4') {
+    $install_version = '5'
+    $version_repo = 'syseleven-platform/php54'
+    $repo_key_sys11 = 'C70320183C05E1E9F24532C87736223724911626'
+
+    apt::ppa {['ppa:ondrej/php5-5.6', 'ppa:ondrej/php5']:
+      ensure => absent,
+    }
+    apt::key {"ppa:$version_repo":
+      ensure => present,
+      id     => $repo_key_sys11,
+    }->
+    apt::ppa {"ppa:$version_repo":
+      ensure => present,
+    }
+  } else {
+    $install_version = $major_version
+    # add default ppa
+    apt::key { 'ppa:ondrej/php':
+      ensure => present,
+      id     => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
+    }
+    apt::ppa { 'ppa:ondrej/php':
+      ensure => present,
+    }
+
+
   }
 
-  package {"php${major_version}":
-    ensure => installed,
+  package { "php${install_version}":
+    ensure  => installed,
     require => Class['Apt::Update'],
   }
 
   # set cli-php version
   file {'/etc/alternatives/php':
     ensure  => link,
-    target  => "/usr/bin/php${major_version}",
-    require => Package["php${major_version}"],
+    target  => "/usr/bin/php${install_version}",
+    require => Package["php${install_version}"],
   }
 
   # set params for class apache::mod::php
   class {'apache::mod::php':
-    php_version => $major_version,
-    require     => Package["php${major_version}"]
+    php_version => $install_version,
+    require     => Package["php${install_version}"]
   }
 
   # we need a symlink, because original augeas php.ini-lenses do not match on /etc/php/5.6/apache/php.ini
@@ -66,7 +87,7 @@ class sc_apache::php (
   file { 'augeas_symlink':
     ensure => link,
     path    => "/etc/php-sc/",
-    target  => "/etc/php/$major_version",
+    target  => "/etc/php/$install_version",
     owner   => 'root',
     group   => 'root',
     require => Class['Apache::Mod::Php'],
@@ -104,7 +125,7 @@ class sc_apache::php (
         $extension_name = "php-$name"
       }
       default: {
-        $extension_name = "php${major_version}-$name"
+        $extension_name = "php${install_version}-$name"
       }
     }
     package { $extension_name:
