@@ -84,13 +84,23 @@ class sc_apache::php (
 
   # we need a symlink, because original augeas php.ini-lenses do not match on /etc/php/5.6/apache/php.ini
   # see: http://augeas.net/stock_lenses.html
-  file { 'augeas_symlink':
-    ensure => link,
-    path    => "/etc/php-sc/",
-    target  => "/etc/php/$install_version",
-    owner   => 'root',
-    group   => 'root',
-    require => Class['Apache::Mod::Php'],
+  if ($major_version == '5.4') {
+    file { 'augeas_symlink':
+      ensure  => link,
+      path    => "/etc/php-sc/",
+      target  => "/etc/php5",
+      owner   => 'root',
+      group   => 'root',
+      require => Class['Apache::Mod::Php'],
+  } else {
+    file { 'augeas_symlink':
+      ensure  => link,
+      path    => "/etc/php-sc/",
+      target  => "/etc/php/$install_version",
+      owner   => 'root',
+      group   => 'root',
+      require => Class['Apache::Mod::Php'],
+    }
   }
 
   # apply php ini setting
