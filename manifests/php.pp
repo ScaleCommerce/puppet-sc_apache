@@ -5,7 +5,7 @@
 # === Variables
 #
 # [*major_version*]
-#  by now this may contain: 5.6, 7.0, 7.1
+#  by now this may contain: 5.6, 7.0, 7.1, 7.2
 #
 # [*modules*]
 #  installs php modules
@@ -23,7 +23,7 @@
 # Copyright 2016 ScaleCommerce GmbH.
 #
 class sc_apache::php (
-  Enum["5.5", "5.6", "7.0", "7.1"] $major_version  = "5.6",
+  Enum["5.5", "5.6", "7.0", "7.1", "7.2"] $major_version  = "5.6",
   $modules,
   $ini_settings,
 ){
@@ -31,7 +31,8 @@ class sc_apache::php (
   $php_lib_path = $major_version ? {
     '5.6' => '/usr/lib/php/20131226',
     '7.0' => '/usr/lib/php/20151012',
-    '7.1' => '/usr/lib/php/20160303'
+    '7.1' => '/usr/lib/php/20160303',
+    '7.2' => '/usr/lib/php/20170718'
   }
 
   # add default ppa

@@ -35,6 +35,17 @@ test:7.1:
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
+  - inspec exec ./test/inspec/sc_apache.rb
+
+test:7.2:
+  stage: Puppet 3
+  script:
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
 
 push2github:
   stage: push2github
