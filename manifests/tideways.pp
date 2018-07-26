@@ -27,7 +27,11 @@
 
 class sc_apache::tideways (
   $ensure = 'installed',
+  $manage_repo = true,
 ){
+  # Check some if they are boolean
+  validate_bool($manage_repo)
+
   if($ensure == 'installed') {
     $apt_ensure = 'present'
   } else {
@@ -36,16 +40,19 @@ class sc_apache::tideways (
 
   include apache::mod::php
 
-  apt::key {'tideways':
-    ensure => $apt_ensure,
-    id     => '6A75A7C5E23F3B3B6AAEEB1411CD8CFCEEB5E8F4',
+  if ($manage_repo) {
+    apt::key {'tideways':
+      ensure => $apt_ensure,
+      id     => '6A75A7C5E23F3B3B6AAEEB1411CD8CFCEEB5E8F4',
+    }
+    apt::source {'tideways':
+      ensure   => $apt_ensure,
+      location => 'http://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages',
+      release  => 'debian',
+      repos    => 'main',
+    }
   }
-  apt::source {'tideways':
-    ensure   => $apt_ensure,
-    location => 'http://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages',
-    release  => 'debian',
-    repos    => 'main',
-  }
+
   package {['tideways-daemon', 'tideways-php', 'tideways-cli']:
     ensure  => $ensure,
     require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
