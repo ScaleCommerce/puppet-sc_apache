@@ -26,7 +26,10 @@ class sc_apache::php (
   Enum["5.5", "5.6", "7.0", "7.1", "7.2"] $major_version  = "5.6",
   $modules,
   $ini_settings,
+  $manage_repo = true,
 ){
+  # Check some if they are boolean
+  validate_bool($manage_repo)
 
   $php_lib_path = $major_version ? {
     '5.6' => '/usr/lib/php/20131226',
@@ -35,13 +38,15 @@ class sc_apache::php (
     '7.2' => '/usr/lib/php/20170718'
   }
 
-  # add default ppa
-  apt::key {'ppa:ondrej/php':
-    ensure => present,
-    id     => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
-  }
-  apt::ppa {'ppa:ondrej/php':
-    ensure => present,
+  if ($manage_repo) {
+    # add default ppa
+    apt::key {'ppa:ondrej/php':
+      ensure => present,
+      id     => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
+    }
+    apt::ppa {'ppa:ondrej/php':
+      ensure => present,
+    }
   }
 
   package {"php${major_version}":
