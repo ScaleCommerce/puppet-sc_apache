@@ -69,7 +69,7 @@ class sc_apache::php (
 
   # we need a symlink, because original augeas php.ini-lenses do not match on /etc/php/5.6/apache/php.ini
   # see: http://augeas.net/stock_lenses.html
-  file { 'augeas_symlink':
+  file { 'php-ini-symlink':
     ensure => link,
     path    => "/etc/php-sc/",
     target  => "/etc/php/$major_version",
@@ -82,14 +82,19 @@ class sc_apache::php (
   # info: apache will be restartet even if only cli settings are changed, needs better implementation
   each($ini_settings) |$context, $items| {
     each($items) |$name, $value| {
-      augeas { "$context-$name":
-        notify  => Service['apache2'],
-        context => "/files/etc/php-sc/$context/php.ini/PUPPET_AUGEAS_OVERRIDES",
-        changes => "set $name $value",
-        require => File['augeas_symlink'],
+      ini_setting { "$context-$name":
+        ensure  => present,
+        path    => "/etc/php-sc/$context/php.ini",
+        section => "PUPPET_OVERRIDES",
+        setting => $name,
+        value   => $value,
+        require => File['php-ini-symlink'],
+        notify  => Service['apache2']
       }
     }
   }
+
+}
 
   # create files for debugging / testing
   file {'/var/www/localhost/info.php':
