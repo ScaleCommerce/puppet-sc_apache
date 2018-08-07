@@ -15,6 +15,7 @@ puppet config set certname puppet-test.scalecommerce
 puppet module install ajcrowe-supervisord
 puppet module install puppetlabs-apache --version 2.3.1
 puppet module install puppetlabs-apt --version 2.4.0
+puppet module install puppetlabs-inifile --version 1.6.0
 puppet module install yo61-logrotate
 git clone https://github.com/ScaleCommerce/puppet-supervisor_provider.git $(puppet config print modulepath |cut -d: -f1)/supervisor_provider
 ln -sf $(pwd) $(puppet config print modulepath |cut -d: -f1)/sc_apache
