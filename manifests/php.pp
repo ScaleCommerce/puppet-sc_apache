@@ -94,8 +94,6 @@ class sc_apache::php (
     }
   }
 
-}
-
   # create files for debugging / testing
   file {'/var/www/localhost/info.php':
     source => "puppet:///modules/sc_apache/info.php",
