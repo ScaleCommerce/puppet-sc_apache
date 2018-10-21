@@ -50,4 +50,4 @@ test:7.2:
 push2github:
   stage: push2github
   script:
-    - git push --mirror https://$GITHUB_TOKEN@github.com/ScaleCommerce/puppet-sc_apache.git
+    - git push --quiet --mirror https://$GITHUB_TOKEN@github.com/ScaleCommerce/puppet-sc_apache.git
