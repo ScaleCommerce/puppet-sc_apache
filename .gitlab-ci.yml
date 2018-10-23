@@ -5,6 +5,7 @@ stages:
   - PHP 7.0
   - PHP 7.1
   - PHP 7.2
+  - PHP 7.3
   - push2github
 
 before_script:
@@ -65,6 +66,18 @@ trusty:7.2:puppet5:
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
 
+trusty:7.3:puppet5:
+  image: scalecommerce/base:0.6
+  stage: PHP 7.3
+  script:
+  - ./test/install-puppet5.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
 # trusty -> puppet6
 trusty:5.6:puppet6:
   image: scalecommerce/base:0.6
@@ -110,6 +123,18 @@ trusty:7.2:puppet6:
   - ./test/install.sh
   - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+trusty:7.3:puppet6:
+  image: scalecommerce/base:0.6
+  stage: PHP 7.3
+  script:
+  - ./test/install-puppet6.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
@@ -163,6 +188,18 @@ xenial:7.2:puppet5:
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
 
+xenial:7.3:puppet5:
+  image: scalecommerce/xenial:1.11
+  stage: PHP 7.3
+  script:
+  - ./test/install-puppet5.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
 # xenial -> puppet6
 xenial:5.6:puppet6:
   image: scalecommerce/xenial:1.11
@@ -208,6 +245,18 @@ xenial:7.2:puppet6:
   - ./test/install.sh
   - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+xenial:7.3:puppet6:
+  image: scalecommerce/xenial:1.11
+  stage: PHP 7.3
+  script:
+  - ./test/install-puppet6.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
@@ -261,6 +310,18 @@ bionic:7.2:puppet5:
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
 
+bionic:7.3:puppet5:
+  image: scalecommerce/bionic:1.0
+  stage: PHP 7.3
+  script:
+  - ./test/install-puppet5.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
 # bionic -> puppet6
 bionic:5.6:puppet6:
   image: scalecommerce/bionic:1.0
@@ -306,6 +367,18 @@ bionic:7.2:puppet6:
   - ./test/install.sh
   - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+bionic:7.3:puppet6:
+  image: scalecommerce/bionic:1.0
+  stage: PHP 7.3
+  script:
+  - ./test/install-puppet6.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb

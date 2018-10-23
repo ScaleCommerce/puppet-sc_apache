@@ -23,7 +23,7 @@
 # Copyright 2016 ScaleCommerce GmbH.
 #
 class sc_apache::php (
-  Enum["5.5", "5.6", "7.0", "7.1", "7.2"] $major_version  = "5.6",
+  Enum["5.6", "7.0", "7.1", "7.2", "7.3"] $major_version  = "7.2",
   $modules,
   $ini_settings,
   $manage_repo = true,
@@ -35,7 +35,8 @@ class sc_apache::php (
     '5.6' => '/usr/lib/php/20131226',
     '7.0' => '/usr/lib/php/20151012',
     '7.1' => '/usr/lib/php/20160303',
-    '7.2' => '/usr/lib/php/20170718'
+    '7.2' => '/usr/lib/php/20170718',
+    '7.3' => 'NOT_RELEASED_YET'
   }
 
   if ($manage_repo) {
