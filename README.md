@@ -116,3 +116,9 @@ sc_apache::php::modules:
   - intl
   - xsl
 ```
+
+## Testing
+
+When making changes you can test this module locally with [gitlab-runner on Mac OSX](https://docs.gitlab.com/runner/install/osx.html)
+
+`gitlab-runner exec docker --env "GIT_STRATEGY=none" --docker-volumes `pwd`:/builds/project-0 xenial:7.2:puppet5`

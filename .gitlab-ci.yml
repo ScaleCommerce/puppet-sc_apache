@@ -1,14 +1,24 @@
-image: scalecommerce/base:0.6
+image: scalecommerce/xenial:1.11
 
 stages:
-  - Puppet 3
-  - Puppet 4
   - Puppet 5
+  - Puppet 6
   - push2github
 
-test:5.6:
-  stage: Puppet 3
+before_script:
+  - apt-get update >/dev/null
+  - apt-get install -y locales >/dev/null
+  - echo "en_US UTF-8" > /etc/locale.gen
+  - locale-gen en_US.UTF-8
+  - export LANG=en_US.UTF-8
+  - export LANGUAGE=en_US:en
+  - export LC_ALL=en_US.UTF-8
+
+xenial:5.6:puppet5:
+  image: scalecommerce/xenial:1.11
+  stage: Puppet 5
   script:
+  - ./test/install-puppet5.sh
   - ./test/install.sh
   - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
@@ -16,9 +26,11 @@ test:5.6:
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
 
-test:7.0:
-  stage: Puppet 3
+xenial:7.0:puppet5:
+  image: scalecommerce/xenial:1.11
+  stage: Puppet 5
   script:
+  - ./test/install-puppet5.sh
   - ./test/install.sh
   - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
@@ -26,20 +38,71 @@ test:7.0:
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
 
-test:7.1:
-  stage: Puppet 3
+xenial:7.1:puppet5:
+  image: scalecommerce/xenial:1.11
+  stage: Puppet 5
   script:
+  - ./test/install-puppet5.sh
   - ./test/install.sh
   - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
+
+xenial:7.2:puppet5:
+  image: scalecommerce/xenial:1.11
+  stage: Puppet 5
+  script:
+  - ./test/install-puppet5.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
 
-test:7.2:
-  stage: Puppet 3
+xenial:5.6:puppet6:
+  image: scalecommerce/xenial:1.11
+  stage: Puppet 6
   script:
+  - ./test/install-puppet6.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+xenial:7.0:puppet6:
+  image: scalecommerce/xenial:1.11
+  stage: Puppet 6
+  script:
+  - ./test/install-puppet6.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+xenial:7.1:puppet6:
+  image: scalecommerce/xenial:1.11
+  stage: Puppet 6
+  script:
+  - ./test/install-puppet6.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+xenial:7.2:puppet6:
+  image: scalecommerce/xenial:1.11
+  stage: Puppet 6
+  script:
+  - ./test/install-puppet6.sh
   - ./test/install.sh
   - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
   - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
