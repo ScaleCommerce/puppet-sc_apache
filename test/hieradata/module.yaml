@@ -124,7 +124,6 @@ sc_apache::vhost_defaults:
 sc_apache::php::modules:
   - mysql
   - gd
-  - mcrypt
   - curl
   - intl
   - xml
