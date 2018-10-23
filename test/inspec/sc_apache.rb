@@ -4,8 +4,8 @@ describe package('php${php_major_version}-cli') do
 end
 
 # apache2 running?
-describe service('apache2') do
- it { should be_running }
+describe processes('apache2') do
+  it { should exist }
 end
 describe port(80) do
   it { should be_listening }

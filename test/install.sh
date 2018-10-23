@@ -20,11 +20,4 @@ puppet module install yo61-logrotate
 git clone https://github.com/ScaleCommerce/puppet-supervisor_provider.git $(puppet config print modulepath |cut -d: -f1)/supervisor_provider
 ln -sf $(pwd) $(puppet config print modulepath |cut -d: -f1)/sc_apache
 
-ln -sf ./test/document_roots /var/www
 curl -s https://omnitruck.chef.io/install.sh | bash -s -- -P inspec
-
-#fix for scalecommerce/base:0.6
-if ! dpkg-query -W apt-transport-https ; then
-    apt-get update
-    apt-get -y install --no-install-recommends apt-transport-https
-fi
