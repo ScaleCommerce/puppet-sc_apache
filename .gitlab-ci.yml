@@ -210,6 +210,104 @@ xenial:7.2:puppet6:
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
 
+# bionic -> puppet5
+bionic:5.6:puppet5:
+  image: scalecommerce/bionic:1.0
+  stage: Puppet 5
+  script:
+  - ./test/install-puppet5.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+bionic:7.0:puppet5:
+  image: scalecommerce/bionic:1.0
+  stage: Puppet 5
+  script:
+  - ./test/install-puppet5.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+bionic:7.1:puppet5:
+  image: scalecommerce/bionic:1.0
+  stage: Puppet 5
+  script:
+  - ./test/install-puppet5.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+bionic:7.2:puppet5:
+  image: scalecommerce/bionic:1.0
+  stage: Puppet 5
+  script:
+  - ./test/install-puppet5.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+# bionic -> puppet6
+bionic:5.6:puppet6:
+  image: scalecommerce/bionic:1.0
+  stage: Puppet 6
+  script:
+  - ./test/install-puppet6.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+bionic:7.0:puppet6:
+  image: scalecommerce/bionic:1.0
+  stage: Puppet 6
+  script:
+  - ./test/install-puppet6.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+bionic:7.1:puppet6:
+  image: scalecommerce/bionic:1.0
+  stage: Puppet 6
+  script:
+  - ./test/install-puppet6.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
+bionic:7.2:puppet6:
+  image: scalecommerce/bionic:1.0
+  stage: Puppet 6
+  script:
+  - ./test/install-puppet6.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+
 push2github:
   stage: push2github
   script:
