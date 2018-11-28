@@ -1,5 +1,5 @@
 # php-cli installed and correct version?
-describe package('php7.2-cli') do
+describe package('php${php_major_version}-cli') do
  it { should be_installed }
 end
 
@@ -30,7 +30,7 @@ end
 
 # php-cli version correct?
 describe command('php -r "echo phpversion();"') do
-  its('stdout') { should match '^7.2' }
+  its('stdout') { should match '^${php_major_version}' }
 end
 
 
