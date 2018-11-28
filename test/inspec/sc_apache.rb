@@ -1,5 +1,5 @@
 # php-cli installed and correct version?
-describe package('phpy${php_major_version}-cli') do
+describe package('php${php_major_version}-cli') do
  it { should be_installed }
 end
 
