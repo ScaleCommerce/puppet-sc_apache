@@ -1,3 +1,3 @@
 <?php
-phpversion();
+echo phpversion();
 ?>
