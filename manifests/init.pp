@@ -48,9 +48,6 @@
 class sc_apache (
   $vhosts = {},
   $vhost_defaults = {},
-  $supervisor_init_script = '/etc/supervisor.init/supervisor-init-wrapper',
-  $supervisor_conf_script = '/etc/supervisor.d/apache2.conf',
-  $supervisor_exec_path   = '/usr/local/bin',
   $modules                = undef,
   $custom_modules         = undef,
 ){
@@ -81,7 +78,7 @@ class sc_apache (
       } else {
         apache::mod { "$name":
           package_ensure => present,
-          notify  => Service['apache2'],
+          notify  => Service['httpd'],
         }
       }
     }
@@ -108,26 +105,24 @@ class sc_apache (
   }
 
 
-  # supervisor
-  file { '/etc/init/apache2.conf':
-    ensure => absent,
-  }->
-  file { '/etc/init.d/apache2':
-    ensure => link,
-    target => $supervisor_init_script,
+  supervisord::program { 'apache2':
+    command     => '/bin/bash -c "mkdir -p /var/run/apache2 && source /etc/apache2/envvars && exec /usr/sbin/apache2 -DFOREGROUND"',
+    autostart   => true,
+    autorestart => true,
+    before      => Service['httpd'],
+    require     => [Package['httpd'], Class['sc_apache::vhosts']],
   }
 
-  file { $supervisor_conf_script:
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template("${module_name}/apache.supervisor.conf.erb"),
-    notify  => Exec['supervisorctl_apache_update'],
+  # remove legacy files
+  file { ['/etc/init/apache2.conf', '/etc/init.d/apache2']:
+    ensure  => absent,
+    before  => Service['httpd'],
+    require => Package['httpd'],
   }
 
-  exec {'supervisorctl_apache_update':
-    command     => "${supervisor_exec_path}/supervisorctl update",
-    refreshonly => true,
+  Service <| title == "httpd" |> {
+    provider => supervisor,
+    require  => Class['sc_apache::php'],
   }
 
   class { 'sc_apache::vhosts':

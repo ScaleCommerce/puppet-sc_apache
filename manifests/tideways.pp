@@ -26,51 +26,56 @@
 #
 
 class sc_apache::tideways (
-  $ensure = 'installed',
-  $manage_repo = true,
+  $daemon_version = 'installed',
+  $php_extension_version = 'installed',
+  $cli_version = 'installed',
+  $proxy = 'https://tideways.scale.sc',
 ){
-  # Check some if they are boolean
-  validate_bool($manage_repo)
-
-  if($ensure == 'installed') {
-    $apt_ensure = 'present'
-  } else {
-    $apt_ensure = 'absent'
-  }
-
   include apache::mod::php
 
-  if ($manage_repo) {
-    apt::key {'tideways':
-      ensure => $apt_ensure,
-      id     => '6A75A7C5E23F3B3B6AAEEB1411CD8CFCEEB5E8F4',
-    }
-    apt::source {'tideways':
-      ensure   => $apt_ensure,
-      location => 'http://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages',
-      release  => 'debian',
-      repos    => 'main',
-    }
+  apt::key {'tideways':
+    id     => '6A75A7C5E23F3B3B6AAEEB1411CD8CFCEEB5E8F4',
+  }
+  apt::source {'tideways':
+    location => 'http://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages',
+    release  => 'debian',
+    repos    => 'main',
   }
 
-  package {['tideways-daemon', 'tideways-php', 'tideways-cli']:
-    ensure  => $ensure,
+  package {'tideways-daemon':
+    ensure  => $daemon_version,
+    require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
+  }
+  package {'tideways-php':
+    ensure  => $php_extension_version,
     require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
     notify  => Service['apache2'],
   }
-
-  # supervisor
-  file { '/etc/init.d/tideways-daemon':
-    ensure => link,
-    target => $sc_apache::supervisor_init_script,
+  package {'tideways-cli':
+    ensure  => $cli_version,
+    require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
   }
 
-  file { '/etc/supervisor.d/tideways-daemon.conf':
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template("${module_name}/tideways.supervisor.conf.erb"),
-    notify => Class[supervisord::reload],
+  supervisord::program { 'tideways-daemon':
+    command     => "/usr/bin/tideways-daemon --log=/var/log/tideways/daemon.log --pidfile=/var/run/tideways/tideways-daemon.pid --server=https://tideways.scale.sc",
+    autostart   => true,
+    autorestart => true,
+    user        => tideways,
+    require     => Package['tideways-daemon'],
+    before      => Service['tideways-daemon'],
+  }
+
+  service { 'tideways-daemon':
+    ensure   => running,
+    provider => supervisor,
+    require  => Package['tideways-daemon'],
+  }
+
+  # remove legacy files
+  file { ['/etc/init.d/tideways-daemon', '/etc/supervisor.d/tideways-daemon.conf']:
+    ensure  => absent,
+    before  => Supervisord::Program['tideways-daemon'],
+    require => Package['tideways-daemon'],
   }
 
 }

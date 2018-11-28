@@ -105,6 +105,9 @@ class sc_apache::php (
   file {'/var/www/localhost/version.php':
     source => "puppet:///modules/sc_apache/version.php",
   }
+ file {'/var/www/localhost/flush_opcache.php':
+    source => "puppet:///modules/sc_apache/flush_opcache.php",
+  }
 
   # install php modules
   each($modules) |$name| {

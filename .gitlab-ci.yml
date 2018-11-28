@@ -1,4 +1,4 @@
-image: scalecommerce/xenial:1.12
+image: scalecommerce/xenial:1.15
 
 stages:
   - PHP 5.6
@@ -141,7 +141,7 @@ trusty:7.3:puppet6:
 
 # xenial -> puppet5
 xenial:5.6:puppet5:
-  image: scalecommerce/xenial:1.12
+  image: scalecommerce/xenial:1.15
   stage: PHP 5.6
   script:
   - ./test/install-puppet5.sh
@@ -153,7 +153,7 @@ xenial:5.6:puppet5:
   - inspec exec ./test/inspec/sc_apache.rb
 
 xenial:7.0:puppet5:
-  image: scalecommerce/xenial:1.12
+  image: scalecommerce/xenial:1.15
   stage: PHP 7.0
   script:
   - ./test/install-puppet5.sh
@@ -165,7 +165,7 @@ xenial:7.0:puppet5:
   - inspec exec ./test/inspec/sc_apache.rb
 
 xenial:7.1:puppet5:
-  image: scalecommerce/xenial:1.12
+  image: scalecommerce/xenial:1.15
   stage: PHP 7.1
   script:
   - ./test/install-puppet5.sh
@@ -177,7 +177,7 @@ xenial:7.1:puppet5:
   - inspec exec ./test/inspec/sc_apache.rb
 
 xenial:7.2:puppet5:
-  image: scalecommerce/xenial:1.12
+  image: scalecommerce/xenial:1.15
   stage: PHP 7.2
   script:
   - ./test/install-puppet5.sh
@@ -189,7 +189,7 @@ xenial:7.2:puppet5:
   - inspec exec ./test/inspec/sc_apache.rb
 
 xenial:7.3:puppet5:
-  image: scalecommerce/xenial:1.12
+  image: scalecommerce/xenial:1.15
   stage: PHP 7.3
   script:
   - ./test/install-puppet5.sh
@@ -202,7 +202,7 @@ xenial:7.3:puppet5:
 
 # xenial -> puppet6
 xenial:5.6:puppet6:
-  image: scalecommerce/xenial:1.12
+  image: scalecommerce/xenial:1.15
   stage: PHP 5.6
   script:
   - ./test/install-puppet6.sh
@@ -214,7 +214,7 @@ xenial:5.6:puppet6:
   - inspec exec ./test/inspec/sc_apache.rb
 
 xenial:7.0:puppet6:
-  image: scalecommerce/xenial:1.12
+  image: scalecommerce/xenial:1.15
   stage: PHP 7.0
   script:
   - ./test/install-puppet6.sh
@@ -226,7 +226,7 @@ xenial:7.0:puppet6:
   - inspec exec ./test/inspec/sc_apache.rb
 
 xenial:7.1:puppet6:
-  image: scalecommerce/xenial:1.12
+  image: scalecommerce/xenial:1.15
   stage: PHP 7.1
   script:
   - ./test/install-puppet6.sh
@@ -238,7 +238,7 @@ xenial:7.1:puppet6:
   - inspec exec ./test/inspec/sc_apache.rb
 
 xenial:7.2:puppet6:
-  image: scalecommerce/xenial:1.12
+  image: scalecommerce/xenial:1.15
   stage: PHP 7.2
   script:
   - ./test/install-puppet6.sh
@@ -250,7 +250,7 @@ xenial:7.2:puppet6:
   - inspec exec ./test/inspec/sc_apache.rb
 
 xenial:7.3:puppet6:
-  image: scalecommerce/xenial:1.12
+  image: scalecommerce/xenial:1.15
   stage: PHP 7.3
   script:
   - ./test/install-puppet6.sh
