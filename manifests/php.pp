@@ -36,7 +36,7 @@ class sc_apache::php (
     '7.0' => '/usr/lib/php/20151012',
     '7.1' => '/usr/lib/php/20160303',
     '7.2' => '/usr/lib/php/20170718',
-    '7.3' => 'NOT_RELEASED_YET'
+    '7.3' => '/usr/lib/php/20180731'
   }
 
   if ($manage_repo) {

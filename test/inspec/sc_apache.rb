@@ -1,5 +1,5 @@
 # php-cli installed and correct version?
-describe package('php${php_major_version}-cli') do
+describe package('phpy${php_major_version}-cli') do
  it { should be_installed }
 end
 
@@ -24,9 +24,9 @@ describe http('http://localhost/info.php') do
 end
 
 # apache php version correct?
-#describe http('http://localhost/version.php') do
-#  its('body') { should match '^7.2' }
-#end
+describe http('http://localhost/version.php') do
+  its('body') { should match '^${php_major_version}' }
+end
 
 # php-cli version correct?
 describe command('php -r "echo phpversion();"') do
@@ -41,14 +41,6 @@ end
 # memcached-extension enabled in apache?
 describe command('curl -s http://localhost/extensions.php | grep memcached') do
  its('exit_status') { should eq 0 }
-end
-# tideways-extension enabled in apache?
-describe command('curl -s http://localhost/extensions.php | grep tideways') do
- its('exit_status') { should eq 0 }
-end
-# tideways-daemon running?
-describe processes('tideways-daemon') do
-  it { should exist }
 end
 
 # common module (example: status module) enabled in apache?
