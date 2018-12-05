@@ -210,7 +210,6 @@ xenial:7.3:puppet5:
   - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
-  - sleep 3600
   - inspec exec ./test/inspec/sc_apache.rb
 
 # xenial -> puppet6
