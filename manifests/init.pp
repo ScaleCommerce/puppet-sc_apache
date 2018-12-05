@@ -107,7 +107,7 @@ class sc_apache (
   # remove legacy files
   file { ['/etc/init/apache2.conf', '/etc/init.d/apache2', '/etc/supervisor.d/apache2.conf']:
     ensure  => absent,
-    before  => [Service['httpd'], Supervisord::Program[apache2],
+    before  => [Service['httpd'], Supervisord::Program[apache2]],
     require => Package['httpd'],
   }
 
