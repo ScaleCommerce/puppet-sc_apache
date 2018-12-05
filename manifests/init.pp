@@ -11,15 +11,6 @@
 # [*vhost_defaults*]
 #  array with apache vhost default params
 #
-# [*supervisor_init_script*]
-#  full path to supervisor init wrapper script
-#
-# [*supervisor_conf_script*
-#  full path to supervisor conf script
-#
-# [*supervisor_exec_path*]
-#  path to supervisor executable
-#
 # [*modules*]
 #  array with apache modules to install
 #  works only with modules which are covered by the orginal puppetlabs-apache module
@@ -114,9 +105,9 @@ class sc_apache (
   }
 
   # remove legacy files
-  file { ['/etc/init/apache2.conf', '/etc/init.d/apache2']:
+  file { ['/etc/init/apache2.conf', '/etc/init.d/apache2', '/etc/supervisor.d/apache2.conf']:
     ensure  => absent,
-    before  => Service['httpd'],
+    before  => [Service['httpd'], Supervisord::Program[apache2],
     require => Package['httpd'],
   }
 
