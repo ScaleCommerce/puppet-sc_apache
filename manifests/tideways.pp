@@ -16,6 +16,9 @@
 # [*sc_apache::tideways::proxy*]
 #  values: https://tideways.scale.sc - Hostname of tideways proxy
 #
+# [*sc_apache::tideways::manage_repo*]
+#  values: true, fals - Set this to false if you want to override the apt repo in hiera
+#
 # === Examples
 #
 # ---
@@ -40,8 +43,21 @@ class sc_apache::tideways (
   $php_extension_version = 'installed',
   $cli_version = 'installed',
   $proxy = 'https://tideways.scale.sc',
+  $manage_repo = true,
 ){
   include apache::mod::php
+
+  if ($manage_repo) {
+    # add default repo
+    apt::key {'tideways':
+      id     => '6A75A7C5E23F3B3B6AAEEB1411CD8CFCEEB5E8F4',
+    }
+    apt::source {'tideways':
+      location => 'http://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages',
+      release  => 'debian',
+      repos    => 'main',
+    }
+  }
 
   package {'tideways-daemon':
     ensure  => $daemon_version,
