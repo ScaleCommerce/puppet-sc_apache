@@ -4,8 +4,17 @@
 #
 # === Variables
 #
-# [*sc_apache::tideways::ensure*]
-#  values: link, absent - used to force deinstall of tideways extension
+# [*sc_apache::tideways::daemon_version*]
+#  values: installed, absent, version
+#
+# [*sc_apache::tideways::php_extension_version*]
+#  values: installed, absent, version
+#
+# [*sc_apache::tideways::cli_version*]
+#  values: installed, absent, version
+#
+# [*sc_apache::tideways::proxy*]
+#  values: https://tideways.scale.sc - Hostname of tideways proxy
 #
 # === Examples
 #
@@ -13,16 +22,17 @@
 # classes:
 #   - sc_apache::tideways
 #
-# sc_apache::tideways:ensure: absent
+# sc_apache::tideways:cli_version: absent
 #
 #
 # === Authors
 #
 # Andreas Ziethen <az@scale.sc>
+# Thomas Lohner <tl@scale.sc>
 #
 # === Copyright
 #
-# Copyright 2016 ScaleCommerce GmbH.
+# Copyright 2018 ScaleCommerce GmbH.
 #
 
 class sc_apache::tideways (
@@ -33,15 +43,6 @@ class sc_apache::tideways (
 ){
   include apache::mod::php
 
-  apt::key {'tideways':
-    id     => '6A75A7C5E23F3B3B6AAEEB1411CD8CFCEEB5E8F4',
-  }
-  apt::source {'tideways':
-    location => 'http://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages',
-    release  => 'debian',
-    repos    => 'main',
-  }
-
   package {'tideways-daemon':
     ensure  => $daemon_version,
     require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
@@ -49,7 +50,7 @@ class sc_apache::tideways (
   package {'tideways-php':
     ensure  => $php_extension_version,
     require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
-    notify  => Service['apache2'],
+    notify  => Service['httpd'],
   }
   package {'tideways-cli':
     ensure  => $cli_version,
