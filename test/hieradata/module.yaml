@@ -61,7 +61,7 @@ classes:
   - sc_apache::php
   - sc_apache::tideways
 #  - sc_apache::zendguard
-#  - sc_apache::ioncube
+  - sc_apache::ioncube
 
 
 ###############################################################
