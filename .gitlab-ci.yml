@@ -85,6 +85,7 @@ trusty:7.3:puppet5:
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
+  - inspec exec ./test/inspec/tideways.rb
   - inspec exec ./test/inspec/ioncube.rb
 
 # trusty -> puppet6
@@ -155,6 +156,7 @@ trusty:7.3:puppet6:
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
+  - inspec exec ./test/inspec/tideways.rb
   - inspec exec ./test/inspec/ioncube.rb
 
 # xenial -> puppet5
@@ -225,6 +227,7 @@ xenial:7.3:puppet5:
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
+  - inspec exec ./test/inspec/tideways.rb
   - inspec exec ./test/inspec/ioncube.rb
 
 # xenial -> puppet6
@@ -295,6 +298,7 @@ xenial:7.3:puppet6:
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
+  - inspec exec ./test/inspec/tideways.rb
   - inspec exec ./test/inspec/ioncube.rb
 
 # bionic -> puppet5
@@ -365,6 +369,7 @@ bionic:7.3:puppet5:
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
+  - inspec exec ./test/inspec/tideways.rb
   - inspec exec ./test/inspec/ioncube.rb
 
 # bionic -> puppet6

@@ -53,7 +53,7 @@ class sc_apache::tideways (
       id     => '6A75A7C5E23F3B3B6AAEEB1411CD8CFCEEB5E8F4',
     }
     apt::source {'tideways':
-      location => 'http://s3-eu-west-1.amazonaws.com/qafoo-profiler/packages',
+      location => 'http://s3-eu-west-1.amazonaws.com/tideways/packages',
       release  => 'debian',
       repos    => 'main',
     }
