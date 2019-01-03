@@ -21,8 +21,9 @@ before_script:
   script:
   - ./test/install-$PUPPET_VERSION.sh
   - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/$PHP_VERSION/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/$PHP_VERSION/" ./test/hieradata/module.yaml
+  - "sed -i \"s/sc_apache::php::major_version:.*/sc_apache::php::major_version: '$PHP_VERSION'/\" ./test/hieradata/module.yaml"
+  - sed -i -r -e "s/package\('php[0-9]+\.[0-9]+-cli'\)/package('php$PHP_VERSION-cli')/g" ./test/inspec/sc_apache.rb
+  - sed -i -r -e "s/should match '\^[0-9]+\.[0-9]+'/should match '^$PHP_VERSION'/g" ./test/inspec/sc_apache.rb
   - puppet apply -v ./test/site.pp
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
