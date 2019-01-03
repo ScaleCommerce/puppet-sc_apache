@@ -17,431 +17,263 @@ before_script:
   - export LANGUAGE=en_US:en
   - export LC_ALL=en_US.UTF-8
 
+.job_template: &full_test
+  script:
+  - ./test/install-$PUPPET_VERSION.sh
+  - ./test/install.sh
+  - sed -i -e "s/\${php_major_version}/$PHP_VERSION/" ./test/inspec/sc_apache.rb
+  - sed -i -e "s/\${php_major_version}/$PHP_VERSION/" ./test/hieradata/module.yaml
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+  - inspec exec ./test/inspec/tideways.rb
+  - inspec exec ./test/inspec/ioncube.rb
+
 # trusty -> puppet5
 trusty:5.6:puppet5:
   image: scalecommerce/base:0.6
   stage: PHP 5.6
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '5.6'
+  <<: *full_test
 
 trusty:7.0:puppet5:
   image: scalecommerce/base:0.6
   stage: PHP 7.0
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.0'
+  <<: *full_test
 
 trusty:7.1:puppet5:
   image: scalecommerce/base:0.6
   stage: PHP 7.1
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.1'
+  <<: *full_test
 
 trusty:7.2:puppet5:
   image: scalecommerce/base:0.6
   stage: PHP 7.2
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.2'
+  <<: *full_test
 
 trusty:7.3:puppet5:
   image: scalecommerce/base:0.6
   stage: PHP 7.3
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.3'
+  <<: *full_test
 
 # trusty -> puppet6
 trusty:5.6:puppet6:
   image: scalecommerce/base:0.6
   stage: PHP 5.6
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '5.6'
+  <<: *full_test
 
 trusty:7.0:puppet6:
   image: scalecommerce/base:0.6
   stage: PHP 7.0
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.0'
+  <<: *full_test
 
 trusty:7.1:puppet6:
   image: scalecommerce/base:0.6
   stage: PHP 7.1
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.1'
+  <<: *full_test
 
 trusty:7.2:puppet6:
   image: scalecommerce/base:0.6
   stage: PHP 7.2
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.2'
+  <<: *full_test
 
 trusty:7.3:puppet6:
   image: scalecommerce/base:0.6
   stage: PHP 7.3
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.3'
+  <<: *full_test
 
 # xenial -> puppet5
 xenial:5.6:puppet5:
   image: scalecommerce/xenial:1.15
   stage: PHP 5.6
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '5.6'
+  <<: *full_test
 
 xenial:7.0:puppet5:
   image: scalecommerce/xenial:1.15
   stage: PHP 7.0
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.0'
+  <<: *full_test
 
 xenial:7.1:puppet5:
   image: scalecommerce/xenial:1.15
   stage: PHP 7.1
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.1'
+  <<: *full_test
 
 xenial:7.2:puppet5:
   image: scalecommerce/xenial:1.15
   stage: PHP 7.2
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.2'
+  <<: *full_test
 
 xenial:7.3:puppet5:
   image: scalecommerce/xenial:1.15
   stage: PHP 7.3
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.3'
+  <<: *full_test
 
 # xenial -> puppet6
 xenial:5.6:puppet6:
   image: scalecommerce/xenial:1.15
   stage: PHP 5.6
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '5.6'
+  <<: *full_test
 
 xenial:7.0:puppet6:
   image: scalecommerce/xenial:1.15
   stage: PHP 7.0
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.0'
+  <<: *full_test
 
 xenial:7.1:puppet6:
   image: scalecommerce/xenial:1.15
   stage: PHP 7.1
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.1'
+  <<: *full_test
 
 xenial:7.2:puppet6:
   image: scalecommerce/xenial:1.15
   stage: PHP 7.2
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.2'
+  <<: *full_test
 
 xenial:7.3:puppet6:
   image: scalecommerce/xenial:1.15
   stage: PHP 7.3
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.3'
+  <<: *full_test
 
 # bionic -> puppet5
 bionic:5.6:puppet5:
   image: scalecommerce/bionic:1.0
   stage: PHP 5.6
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '5.6'
+  <<: *full_test
 
 bionic:7.0:puppet5:
   image: scalecommerce/bionic:1.0
   stage: PHP 7.0
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.0'
+  <<: *full_test
 
 bionic:7.1:puppet5:
   image: scalecommerce/bionic:1.0
   stage: PHP 7.1
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.1'
+  <<: *full_test
 
 bionic:7.2:puppet5:
   image: scalecommerce/bionic:1.0
   stage: PHP 7.2
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.2'
+  <<: *full_test
 
 bionic:7.3:puppet5:
   image: scalecommerce/bionic:1.0
   stage: PHP 7.3
-  script:
-  - ./test/install-puppet5.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet5'
+    PHP_VERSION: '7.3'
+  <<: *full_test
 
 # bionic -> puppet6
 bionic:5.6:puppet6:
   image: scalecommerce/bionic:1.0
   stage: PHP 5.6
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/5.6/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '5.6'
+  <<: *full_test
 
 bionic:7.0:puppet6:
   image: scalecommerce/bionic:1.0
   stage: PHP 7.0
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.0/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.0'
+  <<: *full_test
 
 bionic:7.1:puppet6:
   image: scalecommerce/bionic:1.0
   stage: PHP 7.1
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.1/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.1'
+  <<: *full_test
 
 bionic:7.2:puppet6:
   image: scalecommerce/bionic:1.0
   stage: PHP 7.2
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.2/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.2'
+  <<: *full_test
 
 bionic:7.3:puppet6:
   image: scalecommerce/bionic:1.0
   stage: PHP 7.3
-  script:
-  - ./test/install-puppet6.sh
-  - ./test/install.sh
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/inspec/sc_apache.rb
-  - sed -i -e "s/\${php_major_version}/7.3/" ./test/hieradata/module.yaml
-  - puppet apply -v ./test/site.pp
-  - puppet apply -v ./test/site.pp
-  - inspec exec ./test/inspec/sc_apache.rb
-  - inspec exec ./test/inspec/tideways.rb
-  - inspec exec ./test/inspec/ioncube.rb
+  variables:
+    PUPPET_VERSION: 'puppet6'
+    PHP_VERSION: '7.3'
+  <<: *full_test
 
 push2github:
   stage: push2github
