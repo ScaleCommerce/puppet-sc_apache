@@ -74,7 +74,7 @@ class sc_apache::tideways (
   }
 
   supervisord::program { 'tideways-daemon':
-    command     => "/usr/bin/tideways-daemon --log=/var/log/tideways/daemon.log --pidfile=/var/run/tideways/tideways-daemon.pid --server=https://tideways.scale.sc",
+    command     => "/usr/bin/tideways-daemon --log=/var/log/tideways/daemon.log --pidfile=/var/run/tideways/tideways-daemon.pid --server=$proxy",
     autostart   => true,
     autorestart => true,
     user        => tideways,
