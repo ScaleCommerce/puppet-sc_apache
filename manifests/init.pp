@@ -89,9 +89,9 @@ class sc_apache (
     include apache::mod::reqtimeout
     include apache::mod::negotiation
     include apache::mod::autoindex
+    include apache::mod::env
 
     ::apache::mod { 'access_compat': }
-    ::apache::mod { 'env': }
     ::apache::mod { 'authz_groupfile': }
   }
 
