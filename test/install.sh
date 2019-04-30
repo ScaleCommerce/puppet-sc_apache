@@ -20,4 +20,4 @@ puppet module install yo61-logrotate
 git clone https://github.com/ScaleCommerce/puppet-supervisor_provider.git $(puppet config print modulepath |cut -d: -f1)/supervisor_provider
 ln -sf $(pwd) $(puppet config print modulepath |cut -d: -f1)/sc_apache
 
-curl -s https://omnitruck.chef.io/install.sh | bash -s -- -P inspec
+curl -s https://omnitruck.chef.io/install.sh | bash -s -- -P inspec -v 3.9.3
