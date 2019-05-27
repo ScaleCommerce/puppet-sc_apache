@@ -89,7 +89,7 @@ class sc_apache::tideways (
   }
 
   # remove legacy files
-  file { ['/etc/init.d/tideways-daemon', '/etc/supervisor.d/tideways-daemon.conf']:
+  file { ['/etc/init.d/tideways-daemon', '/etc/supervisor.d/tideways-daemon.conf', '/lib/systemd/system/tideways-daemon.service']:
     ensure  => absent,
     before  => Supervisord::Program['tideways-daemon'],
     require => Package['tideways-daemon'],
