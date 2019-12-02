@@ -43,6 +43,7 @@ class sc_apache::tideways (
   $php_extension_version = 'installed',
   $cli_version = 'installed',
   $proxy = 'https://tideways.scale.sc',
+  $environment = 'production',
   $manage_repo = true,
 ){
   include apache::mod::php
@@ -74,7 +75,7 @@ class sc_apache::tideways (
   }
 
   supervisord::program { 'tideways-daemon':
-    command     => "/usr/bin/tideways-daemon --log=/var/log/tideways/daemon.log --pidfile=/var/run/tideways/tideways-daemon.pid --server=$proxy",
+    command     => "/usr/bin/tideways-daemon --log=/var/log/tideways/daemon.log --pidfile=/var/run/tideways/tideways-daemon.pid --server=$proxy --env=$environment",
     autostart   => true,
     autorestart => true,
     user        => tideways,
