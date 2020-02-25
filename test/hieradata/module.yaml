@@ -29,7 +29,7 @@ sc_apache::vhosts:
 # ini-syntax: https://docs.puppetlabs.com/guides/augeas.html  #
 #                                                             #
 ###############################################################
-sc_apache::php::major_version: '7.3'
+sc_apache::php::major_version: '7.4'
 sc_apache::php::ini_settings:
   apache2:
     session.gc_maxlifetime: 604800

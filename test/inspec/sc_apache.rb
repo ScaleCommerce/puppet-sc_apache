@@ -1,5 +1,5 @@
 # php-cli installed and correct version?
-describe package('php7.3-cli') do
+describe package('php7.4-cli') do
  it { should be_installed }
 end
 
@@ -25,12 +25,12 @@ end
 
 # apache php version correct?
 describe http('http://localhost/version.php') do
-  its('body') { should match '^7.3' }
+  its('body') { should match '^7.4' }
 end
 
 # php-cli version correct?
 describe command('php -r "echo phpversion();"') do
-  its('stdout') { should match '^7.3' }
+  its('stdout') { should match '^7.4' }
 end
 
 
