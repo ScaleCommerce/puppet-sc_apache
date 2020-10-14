@@ -31,15 +31,7 @@ before_script:
   - inspec exec ./test/inspec/tideways.rb
   - inspec exec ./test/inspec/ioncube.rb
 
-# xenial -> puppet5
-#xenial:5.6:puppet5:
-#  image: scalecommerce/xenial:1.18
-#  stage: PHP 5.6
-#  variables:
-#    PUPPET_VERSION: 'puppet5'
-#    PHP_VERSION: '5.6'
-#  <<: *full_test
-
+# xenial / puppet 5
 xenial:7.0:puppet5:
   image: scalecommerce/xenial:1.18
   stage: PHP 7.0
@@ -80,15 +72,15 @@ xenial:7.4:puppet5:
     PHP_VERSION: '7.4'
   <<: *full_test
 
-# xenial -> puppet6
-#xenial:5.6:puppet6:
-#  image: scalecommerce/xenial:1.18
-#  stage: PHP 5.6
-#  variables:
-#    PUPPET_VERSION: 'puppet6'
-#    PHP_VERSION: '5.6'
-#  <<: *full_test
+# xenial:8.0:puppet5:
+#   image: scalecommerce/xenial:1.18
+#   stage: PHP 8.0
+#   variables:
+#     PUPPET_VERSION: 'puppet5'
+#     PHP_VERSION: '8.0'
+#   <<: *full_test
 
+# xenial / puppet 6
 xenial:7.0:puppet6:
   image: scalecommerce/xenial:1.18
   stage: PHP 7.0
@@ -129,15 +121,15 @@ xenial:7.4:puppet6:
     PHP_VERSION: '7.4'
   <<: *full_test
 
-# bionic -> puppet5
-#bionic:5.6:puppet5:
-#  image: scalecommerce/bionic:1.0
-#  stage: PHP 5.6
-#  variables:
-#    PUPPET_VERSION: 'puppet5'
-#    PHP_VERSION: '5.6'
-#  <<: *full_test
+# xenial:8.0:puppet6:
+#   image: scalecommerce/xenial:1.18
+#   stage: PHP 8.0
+#   variables:
+#     PUPPET_VERSION: 'puppet6'
+#     PHP_VERSION: '8.0'
+#   <<: *full_test
 
+# bionic / puppet 5
 bionic:7.0:puppet5:
   image: scalecommerce/bionic:1.0
   stage: PHP 7.0
@@ -178,15 +170,15 @@ bionic:7.4:puppet5:
     PHP_VERSION: '7.4'
   <<: *full_test
 
-# bionic -> puppet6
-#bionic:5.6:puppet6:
-#  image: scalecommerce/bionic:1.0
-#  stage: PHP 5.6
-#  variables:
-#    PUPPET_VERSION: 'puppet6'
-#    PHP_VERSION: '5.6'
-#  <<: *full_test
+# bionic:8.0:puppet5:
+#   image: scalecommerce/bionic:1.0
+#   stage: PHP 8.0
+#   variables:
+#     PUPPET_VERSION: 'puppet5'
+#     PHP_VERSION: '8.0'
+#   <<: *full_test
 
+# bionic / puppet 6
 bionic:7.0:puppet6:
   image: scalecommerce/bionic:1.0
   stage: PHP 7.0
@@ -226,6 +218,14 @@ bionic:7.4:puppet6:
     PUPPET_VERSION: 'puppet6'
     PHP_VERSION: '7.4'
   <<: *full_test
+
+# bionic:8.0:puppet6:
+#   image: scalecommerce/bionic:1.0
+#   stage: PHP 8.0
+#   variables:
+#     PUPPET_VERSION: 'puppet6'
+#     PHP_VERSION: '8.0'
+#   <<: *full_test
 
 push2github:
   stage: push2github
