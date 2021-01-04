@@ -84,8 +84,7 @@ class sc_apache::tideways (
   }
 
   service { 'tideways-daemon':
-    ensure   => running,
-    provider => supervisor,
+    ensure   => stopped,
     require  => Package['tideways-daemon'],
   }
 
