@@ -79,8 +79,7 @@ class sc_apache::tideways (
     autostart   => true,
     autorestart => true,
     user        => tideways,
-    require     => Package['tideways-daemon'],
-    before      => Service['tideways-daemon'],
+    require      => Service['tideways-daemon'],
   }
 
   service { 'tideways-daemon':
