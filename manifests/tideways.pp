@@ -51,11 +51,11 @@ class sc_apache::tideways (
   if ($manage_repo) {
     # add default repo
     apt::key {'tideways':
-      id     => '6A75A7C5E23F3B3B6AAEEB1411CD8CFCEEB5E8F4',
+      id     => 'AF578C61148B3485B585E4018CFC7A80A5672AB5',
     }
     apt::source {'tideways':
-      location => 'http://s3-eu-west-1.amazonaws.com/tideways/packages',
-      release  => 'debian',
+      location => 'https://packages.tideways.com/apt-packages-main',
+      release  => 'any-version',
       repos    => 'main',
     }
   }
