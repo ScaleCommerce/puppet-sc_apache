@@ -97,20 +97,6 @@ class sc_apache::php (
     }
   }
 
-  # right now the ppa installer for php 8.0 uses an undefined symbol in the apache load config
-  # Fixed but not built in https://salsa.debian.org/php-team/php/-/commit/ccf9a053924ef04efd828689f50855f954d7c52c
-  # Background: https://bugs.php.net/bug.php?id=78681
-  if $major_version == '8.0' {
-    file_line { 'php8_fix_loadmodule':
-      path               => "/etc/apache2/mods-available/php8.0.load",
-      line               => "LoadModule php_module /usr/lib/apache2/modules/libphp8.0.so",
-      append_on_no_match => false,
-      match              => '^LoadModule php8_module',
-      require            => Package["php${major_version}"],
-      notify             => Service[httpd]
-    }
-  }
-
   # create files for debugging / testing
   file {'/var/www/localhost/info.php':
     source => "puppet:///modules/sc_apache/info.php",
