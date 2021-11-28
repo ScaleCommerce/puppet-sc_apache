@@ -182,5 +182,7 @@ focal:8.1:puppet7:
 
 push2github:
   stage: push2github
+  only:
+    - master@scalecommerce/puppet-modules/puppet-sc_apache
   script:
     - git push --quiet --mirror https://$GITHUB_TOKEN@github.com/ScaleCommerce/puppet-sc_apache.git
