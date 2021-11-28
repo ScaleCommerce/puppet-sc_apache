@@ -1,15 +1,20 @@
 image: scalecommerce/xenial:1.18
 
 stages:
-#  - PHP 5.6
-#  - PHP 7.0
+  - PHP 5.6
+  - PHP 7.0
   - PHP 7.1
   - PHP 7.2
   - PHP 7.3
   - PHP 7.4
+  - PHP 8.0
+  - PHP 8.1
   - push2github
 
 before_script:
+  - rm -f /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt
+  - update-ca-certificates
+  - rm -f /etc/apt/sources.list.d/puppet.list
   - apt-get update >/dev/null
   - apt-get install -y locales >/dev/null
   - echo "en_US UTF-8" > /etc/locale.gen
@@ -18,11 +23,25 @@ before_script:
   - export LANGUAGE=en_US:en
   - export LC_ALL=en_US.UTF-8
 
-.job_template: &full_test
+.job_template: &without_ioncube
   script:
   - ./test/install-$PUPPET_VERSION.sh
   - ./test/install.sh
   - "sed -i \"s/sc_apache::php::major_version:.*/sc_apache::php::major_version: '$PHP_VERSION'/\" ./test/hieradata/module.yaml"
+  - sed -i '/- sc_apache::ioncube/s/^/#/g' ./test/hieradata/module.yaml
+  - sed -i -r -e "s/package\('php[0-9]+\.[0-9]+-cli'\)/package('php$PHP_VERSION-cli')/g" ./test/inspec/sc_apache.rb
+  - sed -i -r -e "s/should match '\^[0-9]+\.[0-9]+'/should match '^$PHP_VERSION'/g" ./test/inspec/sc_apache.rb
+  - puppet apply -v ./test/site.pp
+  - puppet apply -v ./test/site.pp
+  - inspec exec ./test/inspec/sc_apache.rb
+  - inspec exec ./test/inspec/tideways.rb
+
+.job_template: &with_ioncube
+  script:
+  - ./test/install-$PUPPET_VERSION.sh
+  - ./test/install.sh
+  - "sed -i \"s/sc_apache::php::major_version:.*/sc_apache::php::major_version: '$PHP_VERSION'/\" ./test/hieradata/module.yaml"
+  - sed -i '/- sc_apache::ioncube/s/^#//g' ./test/hieradata/module.yaml
   - sed -i -r -e "s/package\('php[0-9]+\.[0-9]+-cli'\)/package('php$PHP_VERSION-cli')/g" ./test/inspec/sc_apache.rb
   - sed -i -r -e "s/should match '\^[0-9]+\.[0-9]+'/should match '^$PHP_VERSION'/g" ./test/inspec/sc_apache.rb
   - puppet apply -v ./test/site.pp
@@ -31,201 +50,135 @@ before_script:
   - inspec exec ./test/inspec/tideways.rb
   - inspec exec ./test/inspec/ioncube.rb
 
-# xenial / puppet 5
-#xenial:7.0:puppet5:
-#  image: scalecommerce/xenial:1.18
-#  stage: PHP 7.0
-#  variables:
-#    PUPPET_VERSION: 'puppet5'
-#    PHP_VERSION: '7.0'
-#  <<: *full_test
+# bionic / puppet 7
+bionic:5.6:puppet7:
+ image: scalecommerce/bionic:1.6
+ stage: PHP 5.6
+ variables:
+   PUPPET_VERSION: 'puppet7'
+   PHP_VERSION: '5.6'
+ <<: *with_ioncube
 
-xenial:7.1:puppet5:
-  image: scalecommerce/xenial:1.18
+bionic:7.0:puppet7:
+ image: scalecommerce/bionic:1.6
+ stage: PHP 7.0
+ variables:
+   PUPPET_VERSION: 'puppet7'
+   PHP_VERSION: '7.0'
+ <<: *with_ioncube
+
+bionic:7.1:puppet7:
+  image: scalecommerce/bionic:1.6
   stage: PHP 7.1
   variables:
-    PUPPET_VERSION: 'puppet5'
+    PUPPET_VERSION: 'puppet7'
     PHP_VERSION: '7.1'
-  <<: *full_test
+  <<: *with_ioncube
 
-xenial:7.2:puppet5:
-  image: scalecommerce/xenial:1.18
+bionic:7.2:puppet7:
+  image: scalecommerce/bionic:1.6
   stage: PHP 7.2
   variables:
-    PUPPET_VERSION: 'puppet5'
+    PUPPET_VERSION: 'puppet7'
     PHP_VERSION: '7.2'
-  <<: *full_test
+  <<: *with_ioncube
 
-xenial:7.3:puppet5:
-  image: scalecommerce/xenial:1.18
+bionic:7.3:puppet7:
+  image: scalecommerce/bionic:1.6
   stage: PHP 7.3
   variables:
-    PUPPET_VERSION: 'puppet5'
+    PUPPET_VERSION: 'puppet7'
     PHP_VERSION: '7.3'
-  <<: *full_test
+  <<: *with_ioncube
 
-xenial:7.4:puppet5:
-  image: scalecommerce/xenial:1.18
+bionic:7.4:puppet7:
+  image: scalecommerce/bionic:1.6
   stage: PHP 7.4
   variables:
-    PUPPET_VERSION: 'puppet5'
+    PUPPET_VERSION: 'puppet7'
     PHP_VERSION: '7.4'
-  <<: *full_test
+  <<: *with_ioncube
 
-# xenial:8.0:puppet5:
-#   image: scalecommerce/xenial:1.18
-#   stage: PHP 8.0
-#   variables:
-#     PUPPET_VERSION: 'puppet5'
-#     PHP_VERSION: '8.0'
-#   <<: *full_test
+bionic:8.0:puppet7:
+  image: scalecommerce/bionic:1.6
+  stage: PHP 8.0
+  variables:
+    PUPPET_VERSION: 'puppet7'
+    PHP_VERSION: '8.0'
+  <<: *without_ioncube
 
-# xenial / puppet 6
-#xenial:7.0:puppet6:
-#  image: scalecommerce/xenial:1.18
-#  stage: PHP 7.0
-#  variables:
-#    PUPPET_VERSION: 'puppet6'
-#    PHP_VERSION: '7.0'
-#  <<: *full_test
+bionic:8.1:puppet7:
+  image: scalecommerce/bionic:1.6
+  stage: PHP 8.1
+  variables:
+    PUPPET_VERSION: 'puppet7'
+    PHP_VERSION: '8.1'
+  <<: *without_ioncube
 
-xenial:7.1:puppet6:
-  image: scalecommerce/xenial:1.18
+# focal / puppet 7
+focal:5.6:puppet7:
+ image: scalecommerce/focal-supervisord:1.0
+ stage: PHP 5.6
+ variables:
+   PUPPET_VERSION: 'puppet7'
+   PHP_VERSION: '5.6'
+ <<: *with_ioncube
+
+focal:7.0:puppet7:
+ image: scalecommerce/focal-supervisord:1.0
+ stage: PHP 7.0
+ variables:
+   PUPPET_VERSION: 'puppet7'
+   PHP_VERSION: '7.0'
+ <<: *with_ioncube
+
+focal:7.1:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: PHP 7.1
   variables:
-    PUPPET_VERSION: 'puppet6'
+    PUPPET_VERSION: 'puppet7'
     PHP_VERSION: '7.1'
-  <<: *full_test
+  <<: *with_ioncube
 
-xenial:7.2:puppet6:
-  image: scalecommerce/xenial:1.18
+focal:7.2:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: PHP 7.2
   variables:
-    PUPPET_VERSION: 'puppet6'
+    PUPPET_VERSION: 'puppet7'
     PHP_VERSION: '7.2'
-  <<: *full_test
+  <<: *with_ioncube
 
-xenial:7.3:puppet6:
-  image: scalecommerce/xenial:1.18
+focal:7.3:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: PHP 7.3
   variables:
-    PUPPET_VERSION: 'puppet6'
+    PUPPET_VERSION: 'puppet7'
     PHP_VERSION: '7.3'
-  <<: *full_test
+  <<: *with_ioncube
 
-xenial:7.4:puppet6:
-  image: scalecommerce/xenial:1.18
+focal:7.4:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: PHP 7.4
   variables:
-    PUPPET_VERSION: 'puppet6'
+    PUPPET_VERSION: 'puppet7'
     PHP_VERSION: '7.4'
-  <<: *full_test
+  <<: *with_ioncube
 
-# xenial:8.0:puppet6:
-#   image: scalecommerce/xenial:1.18
-#   stage: PHP 8.0
-#   variables:
-#     PUPPET_VERSION: 'puppet6'
-#     PHP_VERSION: '8.0'
-#   <<: *full_test
-
-# bionic / puppet 5
-#bionic:7.0:puppet5:
-#  image: scalecommerce/bionic:1.0
-#  stage: PHP 7.0
-#  variables:
-#    PUPPET_VERSION: 'puppet5'
-#    PHP_VERSION: '7.0'
-#  <<: *full_test
-
-bionic:7.1:puppet5:
-  image: scalecommerce/bionic:1.0
-  stage: PHP 7.1
+focal:8.0:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
+  stage: PHP 8.0
   variables:
-    PUPPET_VERSION: 'puppet5'
-    PHP_VERSION: '7.1'
-  <<: *full_test
+    PUPPET_VERSION: 'puppet7'
+    PHP_VERSION: '8.0'
+  <<: *without_ioncube
 
-bionic:7.2:puppet5:
-  image: scalecommerce/bionic:1.0
-  stage: PHP 7.2
+focal:8.1:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
+  stage: PHP 8.1
   variables:
-    PUPPET_VERSION: 'puppet5'
-    PHP_VERSION: '7.2'
-  <<: *full_test
-
-bionic:7.3:puppet5:
-  image: scalecommerce/bionic:1.0
-  stage: PHP 7.3
-  variables:
-    PUPPET_VERSION: 'puppet5'
-    PHP_VERSION: '7.3'
-  <<: *full_test
-
-bionic:7.4:puppet5:
-  image: scalecommerce/bionic:1.0
-  stage: PHP 7.4
-  variables:
-    PUPPET_VERSION: 'puppet5'
-    PHP_VERSION: '7.4'
-  <<: *full_test
-
-# bionic:8.0:puppet5:
-#   image: scalecommerce/bionic:1.0
-#   stage: PHP 8.0
-#   variables:
-#     PUPPET_VERSION: 'puppet5'
-#     PHP_VERSION: '8.0'
-#   <<: *full_test
-
-# bionic / puppet 6
-#bionic:7.0:puppet6:
-#  image: scalecommerce/bionic:1.0
-#  stage: PHP 7.0
-#  variables:
-#    PUPPET_VERSION: 'puppet6'
-#    PHP_VERSION: '7.0'
-#  <<: *full_test
-
-bionic:7.1:puppet6:
-  image: scalecommerce/bionic:1.0
-  stage: PHP 7.1
-  variables:
-    PUPPET_VERSION: 'puppet6'
-    PHP_VERSION: '7.1'
-  <<: *full_test
-
-bionic:7.2:puppet6:
-  image: scalecommerce/bionic:1.0
-  stage: PHP 7.2
-  variables:
-    PUPPET_VERSION: 'puppet6'
-    PHP_VERSION: '7.2'
-  <<: *full_test
-
-bionic:7.3:puppet6:
-  image: scalecommerce/bionic:1.0
-  stage: PHP 7.3
-  variables:
-    PUPPET_VERSION: 'puppet6'
-    PHP_VERSION: '7.3'
-  <<: *full_test
-
-bionic:7.4:puppet6:
-  image: scalecommerce/bionic:1.0
-  stage: PHP 7.4
-  variables:
-    PUPPET_VERSION: 'puppet6'
-    PHP_VERSION: '7.4'
-  <<: *full_test
-
-# bionic:8.0:puppet6:
-#   image: scalecommerce/bionic:1.0
-#   stage: PHP 8.0
-#   variables:
-#     PUPPET_VERSION: 'puppet6'
-#     PHP_VERSION: '8.0'
-#   <<: *full_test
+    PUPPET_VERSION: 'puppet7'
+    PHP_VERSION: '8.1'
+  <<: *without_ioncube
 
 push2github:
   stage: push2github
