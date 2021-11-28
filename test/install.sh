@@ -7,7 +7,7 @@ echo "Puppet Version: $(puppet -V)"
 
 # configure puppet
 ln -sf $(pwd)/test/hiera.yaml $(puppet config print confdir |cut -d: -f1)/
-curl -s https://gitlab.scale.sc/scalecommerce/postinstall/raw/master/puppet.conf > $(puppet config print confdir |cut -d: -f1)/puppet.conf
+ln -sf $(pwd)/test/puppet.conf > $(puppet config print confdir |cut -d: -f1)/puppet.conf
 ln -sf $(pwd)/test/hieradata $(puppet config print confdir |cut -d: -f1)/hieradata
 puppet config set certname puppet-test.scalecommerce
 
