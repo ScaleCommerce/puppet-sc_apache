@@ -5,7 +5,7 @@
 # === Variables
 #
 # [*major_version*]
-#  by now this may contain: 5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0
+#  by now this may contain: 5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0, 8.1
 #
 # [*modules*]
 #  installs php modules
@@ -23,7 +23,7 @@
 # Copyright 2016 ScaleCommerce GmbH.
 #
 class sc_apache::php (
-  Enum["5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0"] $major_version  = "7.2",
+  Enum["5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1"] $major_version  = "7.2",
   $modules,
   $ini_settings,
   $manage_repo = true,
@@ -38,7 +38,8 @@ class sc_apache::php (
     '7.2' => '/usr/lib/php/20170718',
     '7.3' => '/usr/lib/php/20180731',
     '7.4' => '/usr/lib/php/20190902',
-    '8.0' => '/usr/lib/php/20200804'
+    '8.0' => '/usr/lib/php/20200804',
+    '8.1' => '/usr/lib/php/20210902'
   }
 
   if ($manage_repo) {
@@ -97,19 +98,20 @@ class sc_apache::php (
     }
   }
 
-  # right now the ppa installer for php 8.0 uses an undefined symbol in the apache load config
+  # right now the ppa installer for php >= 8.0 uses an undefined symbol in the apache load config
   # Fixed but not built in https://salsa.debian.org/php-team/php/-/commit/ccf9a053924ef04efd828689f50855f954d7c52c
   # Background: https://bugs.php.net/bug.php?id=78681
-  if $major_version == '8.0' {
+  if versioncmp($major_version, '7.4') > 0 {
     file_line { 'php8_fix_loadmodule':
-      path               => "/etc/apache2/mods-available/php8.0.load",
-      line               => "LoadModule php_module /usr/lib/apache2/modules/libphp8.0.so",
+      path               => "/etc/apache2/mods-available/php${major_version}.load",
+      line               => "LoadModule php_module /usr/lib/apache2/modules/libphp${major_version}.so",
       append_on_no_match => false,
       match              => '^LoadModule php8_module',
       require            => Package["php${major_version}"],
       notify             => Service[httpd]
     }
   }
+
 
   # create files for debugging / testing
   file {'/var/www/localhost/info.php':
