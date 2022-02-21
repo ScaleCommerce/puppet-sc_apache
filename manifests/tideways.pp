@@ -63,6 +63,7 @@ class sc_apache::tideways (
   package {'tideways-daemon':
     ensure  => $daemon_version,
     require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
+    notify  => Service['tideways-daemon'],
   }
   package {'tideways-php':
     ensure  => $php_extension_version,
