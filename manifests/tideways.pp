@@ -63,7 +63,7 @@ class sc_apache::tideways (
   package {'tideways-daemon':
     ensure  => $daemon_version,
     require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
-    notify  => Service['tideways-daemon'],
+    notify  => Exec['restart-tideways-daemon'],
   }
   package {'tideways-php':
     ensure  => $php_extension_version,
@@ -93,6 +93,12 @@ class sc_apache::tideways (
     ensure  => absent,
     before  => Supervisord::Program['tideways-daemon'],
     require => Package['tideways-daemon'],
+  }
+
+  # restart tideways-daemon
+  exec { 'restart-tideways-daemon':
+    command => '/usr/local/bin/supervisorctl restart tideways-daemon',
+    refreshonly => true,
   }
 
 }
