@@ -9,6 +9,7 @@ stages:
   - PHP 7.4
   - PHP 8.0
   - PHP 8.1
+  - PHP 8.2
   - push2github
 
 before_script:
@@ -115,6 +116,14 @@ bionic:8.1:puppet7:
     PHP_VERSION: '8.1'
   <<: *without_ioncube
 
+bionic:8.2:puppet7:
+  image: scalecommerce/bionic:1.6
+  stage: PHP 8.2
+  variables:
+    PUPPET_VERSION: 'puppet7'
+    PHP_VERSION: '8.2'
+  <<: *without_ioncube
+
 # focal / puppet 7
 focal:5.6:puppet7:
  image: scalecommerce/focal-supervisord:1.0
@@ -178,6 +187,14 @@ focal:8.1:puppet7:
   variables:
     PUPPET_VERSION: 'puppet7'
     PHP_VERSION: '8.1'
+  <<: *without_ioncube
+
+focal:8.2:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
+  stage: PHP 8.2
+  variables:
+    PUPPET_VERSION: 'puppet7'
+    PHP_VERSION: '8.2'
   <<: *without_ioncube
 
 push2github:
