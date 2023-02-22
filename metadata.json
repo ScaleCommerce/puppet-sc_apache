@@ -1,8 +1,8 @@
 {
   "name": "scalecommerce-sc_apache",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "author": "Andreas Ziethen ScaleCommerce GmbH",
-  "summary": "ScaleCommerce Wrapper Module for puppetlabs-apache. Manages Supervisord, vhosts, OPCache, ZendGuard Loader, IonCube..",
+  "summary": "ScaleCommerce Wrapper Module for puppetlabs-apache. Manages Supervisord, vhosts, OPCache, ZendGuard Loader, IonCube, SourceGuardian..",
   "license": "Apache 2.0",
   "source": "https://github.com/ScaleCommerce/puppet-sc_apache.git",
   "project_page": "https://github.com/ScaleCommerce/puppet-sc_apache",
