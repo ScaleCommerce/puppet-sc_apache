@@ -38,7 +38,7 @@ class sc_apache::php (
     '7.2' => '/usr/lib/php/20170718',
     '7.3' => '/usr/lib/php/20180731',
     '7.4' => '/usr/lib/php/20190902',
-    '8.0' => '/usr/lib/php/20200804',
+    '8.0' => '/usr/lib/php/20200930',
     '8.1' => '/usr/lib/php/20210902',
     '8.2' => '/usr/lib/php/20220829'
   }
