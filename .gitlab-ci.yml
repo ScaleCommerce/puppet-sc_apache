@@ -3,6 +3,8 @@ stages:
   - push2github
 
 before_script:
+  - rm -f /usr/share/ca-certificates/mozilla/DST_Root_CA_X3.crt
+  - update-ca-certificates
   - rm -f /etc/apt/sources.list.d/puppet.list
   - apt-get update >/dev/null
   - apt-get install -y locales >/dev/null
