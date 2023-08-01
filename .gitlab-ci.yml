@@ -132,6 +132,8 @@ focal:8.2:puppet7:
 
 push2github:
   stage: push2github
+  tags:
+    - dind
   only:
     - master@scalecommerce/puppet-modules/puppet-sc_apache
   script:
