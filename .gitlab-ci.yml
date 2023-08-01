@@ -131,6 +131,7 @@ focal:8.2:puppet7:
   <<: *without_ioncube
 
 push2github:
+  image: scalecommerce/focal-supervisord:1.0
   stage: push2github
   tags:
     - dind
