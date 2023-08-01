@@ -63,6 +63,8 @@ focal:7.0:puppet7:
 focal:7.1:puppet7:
   image: scalecommerce/focal-supervisord:1.0
   stage: test
+  tags:
+    - dind
   variables:
     PUPPET_VERSION: 'puppet7'
     PHP_VERSION: '7.1'
