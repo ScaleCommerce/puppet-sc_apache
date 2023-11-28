@@ -132,6 +132,17 @@ focal:8.2:puppet7:
     PHP_VERSION: '8.2'
   <<: *without_ioncube
 
+
+focal:8.3:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
+  stage: test
+  tags:
+    - dind
+  variables:
+    PUPPET_VERSION: 'puppet7'
+    PHP_VERSION: '8.3'
+  <<: *without_ioncube
+
 push2github:
   image: scalecommerce/focal-supervisord:1.0
   stage: push2github
