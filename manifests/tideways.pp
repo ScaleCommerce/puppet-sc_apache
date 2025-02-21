@@ -76,7 +76,7 @@ class sc_apache::tideways (
   }
 
   supervisord::program { 'tideways-daemon':
-    command     => "/usr/bin/tideways-daemon --log=/var/log/tideways/daemon.log --pidfile=/var/run/tideways/tideways-daemon.pid --server=$proxy --env=$environment",
+    command     => "/usr/bin/tideways-daemon --log=/var/log/tideways/daemon.log --server=$proxy --env=$environment",
     autostart   => true,
     autorestart => true,
     user        => tideways,
