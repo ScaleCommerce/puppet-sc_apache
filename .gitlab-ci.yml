@@ -162,7 +162,10 @@ push2github:
   only:
     - master@scalecommerce/puppet-modules/puppet-sc_apache
   script:
+    - echo "$GITHUB_SSH_KEY_BASE64" | base64 -d > ~/.ssh/id_ed25519
+    - chmod 600 ~/.ssh/id_ed25519
+    - ssh-keyscan github.com >> ~/.ssh/known_hosts
     - git clone --mirror $CI_REPOSITORY_URL
     - cd puppet-sc_apache.git
-    - git remote set-url --push origin https://$GITHUB_TOKEN@github.com/ScaleCommerce/puppet-sc_apache.git
+    - git remote set-url --push origin git@github.com:ScaleCommerce/puppet-sc_apache.git
     - git push --quiet --mirror
