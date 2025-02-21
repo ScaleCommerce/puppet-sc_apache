@@ -5,7 +5,7 @@
 # === Variables
 #
 # [*major_version*]
-#  by now this may contain: 5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3
+#  by now this may contain: 5.6, 7.0, 7.1, 7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4
 #
 # [*modules*]
 #  installs php modules
@@ -23,7 +23,7 @@
 # Copyright 2016 ScaleCommerce GmbH.
 #
 class sc_apache::php (
-  Enum["5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2", "8.3"] $major_version  = "7.2",
+  Enum["5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2", "8.3", "8.4"] $major_version  = "7.2",
   $modules,
   $ini_settings,
   $manage_repo = true,
@@ -41,7 +41,8 @@ class sc_apache::php (
     '8.0' => '/usr/lib/php/20200930',
     '8.1' => '/usr/lib/php/20210902',
     '8.2' => '/usr/lib/php/20220829',
-    '8.3' => '/usr/lib/php/20220830'
+    '8.3' => '/usr/lib/php/20220830',
+    '8.4' => '/usr/lib/php/20240924',
   }
 
   if ($manage_repo) {
