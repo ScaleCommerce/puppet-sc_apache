@@ -23,6 +23,8 @@ before_script:
   - sed -i -r -e "s/package\('php[0-9]+\.[0-9]+-cli'\)/package('php$PHP_VERSION-cli')/g" ./test/inspec/sc_apache.rb
   - sed -i -r -e "s/should match '\^[0-9]+\.[0-9]+'/should match '^$PHP_VERSION'/g" ./test/inspec/sc_apache.rb
   - puppet apply -v ./test/site.pp
+  - cat /var/log/supervisor/program_tideways-daemon.log
+  - cat /var/log/supervisor/program_tideways-daemon.error
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
   - inspec exec ./test/inspec/tideways.rb
@@ -36,6 +38,8 @@ before_script:
   - sed -i -r -e "s/package\('php[0-9]+\.[0-9]+-cli'\)/package('php$PHP_VERSION-cli')/g" ./test/inspec/sc_apache.rb
   - sed -i -r -e "s/should match '\^[0-9]+\.[0-9]+'/should match '^$PHP_VERSION'/g" ./test/inspec/sc_apache.rb
   - puppet apply -v ./test/site.pp
+  - cat /var/log/supervisor/program_tideways-daemon.log
+  - cat /var/log/supervisor/program_tideways-daemon.error
   - puppet apply -v ./test/site.pp
   - inspec exec ./test/inspec/sc_apache.rb
   - inspec exec ./test/inspec/tideways.rb
