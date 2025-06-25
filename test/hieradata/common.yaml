@@ -1,3 +1,6 @@
 ---
 classes:
   - supervisord
+
+supervisord::run_path: /var/run
+supervisord::package_provider: apt
