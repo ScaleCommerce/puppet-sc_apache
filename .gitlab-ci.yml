@@ -43,7 +43,7 @@ before_script:
 
 # noble / puppet 7
 noble:5.6:puppet7:
- image: scalecommerce/docker/noble:1.1
+ image: scalecommerce/noble:1.1
  stage: test
  tags:
     - dind
@@ -53,7 +53,7 @@ noble:5.6:puppet7:
  <<: *with_ioncube
 
 noble:7.0:puppet7:
- image: scalecommerce/docker/noble:1.1
+ image: scalecommerce/noble:1.1
  stage: test
  tags:
     - dind
@@ -63,7 +63,7 @@ noble:7.0:puppet7:
  <<: *with_ioncube
 
 noble:7.1:puppet7:
-  image: scalecommerce/docker/noble:1.1
+  image: scalecommerce/noble:1.1
   stage: test
   tags:
     - dind
@@ -73,7 +73,7 @@ noble:7.1:puppet7:
   <<: *with_ioncube
 
 noble:7.2:puppet7:
-  image: scalecommerce/docker/noble:1.1
+  image: scalecommerce/noble:1.1
   stage: test
   tags:
     - dind
@@ -83,7 +83,7 @@ noble:7.2:puppet7:
   <<: *with_ioncube
 
 noble:7.3:puppet7:
-  image: scalecommerce/docker/noble:1.1
+  image: scalecommerce/noble:1.1
   stage: test
   tags:
     - dind
@@ -93,7 +93,7 @@ noble:7.3:puppet7:
   <<: *with_ioncube
 
 noble:7.4:puppet7:
-  image: scalecommerce/docker/noble:1.1
+  image: scalecommerce/noble:1.1
   stage: test
   tags:
     - dind
@@ -103,7 +103,7 @@ noble:7.4:puppet7:
   <<: *with_ioncube
 
 noble:8.0:puppet7:
-  image: scalecommerce/docker/noble:1.1
+  image: scalecommerce/noble:1.1
   stage: test
   tags:
     - dind
@@ -113,7 +113,7 @@ noble:8.0:puppet7:
   <<: *without_ioncube
 
 noble:8.1:puppet7:
-  image: scalecommerce/docker/noble:1.1
+  image: scalecommerce/noble:1.1
   stage: test
   tags:
     - dind
@@ -123,7 +123,7 @@ noble:8.1:puppet7:
   <<: *without_ioncube
 
 noble:8.2:puppet7:
-  image: scalecommerce/docker/noble:1.1
+  image: scalecommerce/noble:1.1
   stage: test
   tags:
     - dind
@@ -134,7 +134,7 @@ noble:8.2:puppet7:
 
 
 noble:8.3:puppet7:
-  image: scalecommerce/docker/noble:1.1
+  image: scalecommerce/noble:1.1
   stage: test
   tags:
     - dind
@@ -144,7 +144,7 @@ noble:8.3:puppet7:
   <<: *without_ioncube
 
 noble:8.4:puppet7:
-  image: scalecommerce/docker/noble:1.1
+  image: scalecommerce/noble:1.1
   stage: test
   tags:
     - dind
@@ -155,7 +155,7 @@ noble:8.4:puppet7:
 
 
 push2github:
-  image: scalecommerce/docker/noble:1.1
+  image: scalecommerce/noble:1.1
   stage: push2github
   tags:
     - dind
