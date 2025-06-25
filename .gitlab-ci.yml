@@ -41,9 +41,9 @@ before_script:
   - inspec exec ./test/inspec/tideways.rb
   - inspec exec ./test/inspec/ioncube.rb
 
-# noble / puppet 7
-noble:5.6:puppet7:
- image: scalecommerce/noble:1.1
+# focal / puppet 7
+focal:5.6:puppet7:
+ image: scalecommerce/focal-supervisord:1.0
  stage: test
  tags:
     - dind
@@ -52,8 +52,8 @@ noble:5.6:puppet7:
    PHP_VERSION: '5.6'
  <<: *with_ioncube
 
-noble:7.0:puppet7:
- image: scalecommerce/noble:1.1
+focal:7.0:puppet7:
+ image: scalecommerce/focal-supervisord:1.0
  stage: test
  tags:
     - dind
@@ -62,8 +62,8 @@ noble:7.0:puppet7:
    PHP_VERSION: '7.0'
  <<: *with_ioncube
 
-noble:7.1:puppet7:
-  image: scalecommerce/noble:1.1
+focal:7.1:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: test
   tags:
     - dind
@@ -72,8 +72,8 @@ noble:7.1:puppet7:
     PHP_VERSION: '7.1'
   <<: *with_ioncube
 
-noble:7.2:puppet7:
-  image: scalecommerce/noble:1.1
+focal:7.2:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: test
   tags:
     - dind
@@ -82,8 +82,8 @@ noble:7.2:puppet7:
     PHP_VERSION: '7.2'
   <<: *with_ioncube
 
-noble:7.3:puppet7:
-  image: scalecommerce/noble:1.1
+focal:7.3:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: test
   tags:
     - dind
@@ -92,8 +92,8 @@ noble:7.3:puppet7:
     PHP_VERSION: '7.3'
   <<: *with_ioncube
 
-noble:7.4:puppet7:
-  image: scalecommerce/noble:1.1
+focal:7.4:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: test
   tags:
     - dind
@@ -102,8 +102,8 @@ noble:7.4:puppet7:
     PHP_VERSION: '7.4'
   <<: *with_ioncube
 
-noble:8.0:puppet7:
-  image: scalecommerce/noble:1.1
+focal:8.0:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: test
   tags:
     - dind
@@ -112,8 +112,8 @@ noble:8.0:puppet7:
     PHP_VERSION: '8.0'
   <<: *without_ioncube
 
-noble:8.1:puppet7:
-  image: scalecommerce/noble:1.1
+focal:8.1:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: test
   tags:
     - dind
@@ -122,8 +122,8 @@ noble:8.1:puppet7:
     PHP_VERSION: '8.1'
   <<: *without_ioncube
 
-noble:8.2:puppet7:
-  image: scalecommerce/noble:1.1
+focal:8.2:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: test
   tags:
     - dind
@@ -133,8 +133,8 @@ noble:8.2:puppet7:
   <<: *without_ioncube
 
 
-noble:8.3:puppet7:
-  image: scalecommerce/noble:1.1
+focal:8.3:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: test
   tags:
     - dind
@@ -143,8 +143,8 @@ noble:8.3:puppet7:
     PHP_VERSION: '8.3'
   <<: *without_ioncube
 
-noble:8.4:puppet7:
-  image: scalecommerce/noble:1.1
+focal:8.4:puppet7:
+  image: scalecommerce/focal-supervisord:1.0
   stage: test
   tags:
     - dind
@@ -155,7 +155,7 @@ noble:8.4:puppet7:
 
 
 push2github:
-  image: scalecommerce/noble:1.1
+  image: scalecommerce/focal-supervisord:1.0
   stage: push2github
   tags:
     - dind
