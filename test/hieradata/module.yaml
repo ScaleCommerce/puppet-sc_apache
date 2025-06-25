@@ -103,6 +103,10 @@ apache::mod::prefork::maxspareservers: '6'
 apache::mod::prefork::serverlimit: '64'
 apache::mod::prefork::maxclients: '64'
 apache::mod::prefork::maxrequestsperchild: '10000'
+apache::mod::mime::mime_support_package: 'media-types'
+apache::mod::mime::mime_types_additional:
+  'AddType':
+    application/x-httpd-php: '.php'
 
 
 sc_apache::vhost_defaults:
