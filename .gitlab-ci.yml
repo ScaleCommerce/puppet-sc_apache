@@ -158,7 +158,7 @@ push2github:
   image: registry.scale.sc/scalecommerce/docker/noble:1.1
   stage: push2github
   tags:
-    - dind
+    - shared-docker
   only:
     - master@scalecommerce/puppet-modules/puppet-sc_apache
   script:
