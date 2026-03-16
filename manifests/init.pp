@@ -97,7 +97,7 @@ class sc_apache (
 
 
   supervisord::program { 'apache2':
-    command     => '/bin/bash -c "mkdir -p /var/run/apache2 && source /etc/apache2/envvars && exec /usr/sbin/apache2 -DFOREGROUND"',
+    command     => '/bin/bash -c "mkdir -p /var/run/apache2 && pkill -F /var/run/apache2/apache2.pid || true; rm -f /var/run/apache2/apache2.pid; sleep 1; source /etc/apache2/envvars && exec /usr/sbin/apache2 -DFOREGROUND"',
     autostart   => true,
     autorestart => true,
     before      => Service['httpd'],
