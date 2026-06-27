@@ -45,6 +45,7 @@ class sc_apache::tideways (
   $proxy = 'https://tideways.scale.sc',
   $environment = 'production',
   $manage_repo = true,
+  $use_supervisor = true,
 ){
   include apache::mod::php
 
@@ -63,7 +64,7 @@ class sc_apache::tideways (
   package {'tideways-daemon':
     ensure  => $daemon_version,
     require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
-    notify  => Exec['restart-tideways-daemon'],
+    notify  => $use_supervisor ? { true => Exec['restart-tideways-daemon'], default => undef },
   }
   package {'tideways-php':
     ensure  => $php_extension_version,
@@ -75,30 +76,32 @@ class sc_apache::tideways (
     require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
   }
 
-  supervisord::program { 'tideways-daemon':
-    command     => "/usr/bin/tideways-daemon --log=/var/log/tideways/daemon.log --server=$proxy --env=$environment",
-    autostart   => true,
-    autorestart => true,
-    user        => tideways,
-    require      => Service['tideways-daemon'],
-  }
+  if $use_supervisor {
+    supervisord::program { 'tideways-daemon':
+      command     => "/usr/bin/tideways-daemon --log=/var/log/tideways/daemon.log --server=$proxy --env=$environment",
+      autostart   => true,
+      autorestart => true,
+      user        => tideways,
+      require      => Service['tideways-daemon'],
+    }
 
-  service { 'tideways-daemon':
-    ensure   => stopped,
-    require  => Package['tideways-daemon'],
-  }
+    service { 'tideways-daemon':
+      ensure   => stopped,
+      require  => Package['tideways-daemon'],
+    }
 
-  # remove legacy files
-  file { ['/etc/init.d/tideways-daemon', '/etc/supervisor.d/tideways-daemon.conf', '/lib/systemd/system/tideways-daemon.service']:
-    ensure  => absent,
-    before  => Supervisord::Program['tideways-daemon'],
-    require => Package['tideways-daemon'],
-  }
+    # remove legacy files
+    file { ['/etc/init.d/tideways-daemon', '/etc/supervisor.d/tideways-daemon.conf', '/lib/systemd/system/tideways-daemon.service']:
+      ensure  => absent,
+      before  => Supervisord::Program['tideways-daemon'],
+      require => Package['tideways-daemon'],
+    }
 
-  # restart tideways-daemon
-  exec { 'restart-tideways-daemon':
-    command => '/usr/local/bin/supervisorctl restart tideways-daemon',
-    refreshonly => true,
+    # restart tideways-daemon
+    exec { 'restart-tideways-daemon':
+      command => '/usr/local/bin/supervisorctl restart tideways-daemon',
+      refreshonly => true,
+    }
   }
 
 }
