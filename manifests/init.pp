@@ -20,13 +20,6 @@
 #  array with modules which are not covered by puppetlabs-apache module
 #  will be installed as package
 #
-# How apache (httpd) is supervised is selected by the global hiera key
-# `sc::service_manager` (`supervisor` (default) or `zpinit`), NOT by a
-# per-module flag: `supervisor` includes sc_apache::supervisor (supervisord
-# program + provider override), `zpinit` includes sc_apache::zpinit (writes the
-# zpinit service TOML; the httpd service is flipped to provider => zpinit in
-# site.pp).
-#
 # === hiera example
 #
 # sc_apache::modules:
@@ -103,11 +96,11 @@ class sc_apache (
   }
 
 
-  $service_manager = lookup('sc::service_manager', Enum['supervisor', 'zpinit'], 'first', 'supervisor')
-  case $service_manager {
-    'zpinit': { class { '::sc_apache::zpinit': } }
-    default:  { class { '::sc_apache::supervisor': } }
-  }
+  # Process supervision is declared in sc_apache::supervisor via
+  # supervisord::program, which self-dispatches to zpinit when
+  # sc::service_manager is 'zpinit' (see the supervisord module). The httpd
+  # service provider is owned by site.pp.
+  include ::sc_apache::supervisor
 
   class { 'sc_apache::vhosts':
     vhosts         => $vhosts,

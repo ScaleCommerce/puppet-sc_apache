@@ -1,9 +1,11 @@
 # == Class: sc_apache::supervisor
 #
-# Supervisord wiring for apache. Declares the `apache2` supervisord program and
-# overrides the httpd service onto the `supervisor` provider. Gated by
-# `sc_apache::use_supervisor` so nodes not using supervisord (e.g. zpinit) can
-# opt out from data without editing this module.
+# Declares the `apache2` process via supervisord::program. That define
+# self-dispatches to a zpinit::service when sc::service_manager is 'zpinit'
+# (see the supervisord module), so this works on both backends and the
+# Supervisord::Program[apache2] handle keeps resolving for references. The httpd
+# service provider is owned by site.pp (the global $sc_service_manager
+# collector), so this class no longer overrides it.
 #
 class sc_apache::supervisor {
 
@@ -22,8 +24,8 @@ class sc_apache::supervisor {
     require => Package['httpd'],
   }
 
-  Service <| title == "httpd" |> {
-    provider => supervisor,
-    require  => Class['sc_apache::php'],
-  }
+  # Preserve the original ordering (php configured before httpd starts) without
+  # overriding the service provider -- site.pp owns the provider, and a second
+  # collector override of the same resource would conflict.
+  Class['sc_apache::php'] -> Service['httpd']
 }
