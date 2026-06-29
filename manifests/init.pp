@@ -20,11 +20,12 @@
 #  array with modules which are not covered by puppetlabs-apache module
 #  will be installed as package
 #
-# [*use_supervisor*]
-#  can be true or false, default is true.
-#  determines if apache (httpd) is managed via supervisord. Set false on nodes
-#  that do not use supervisord (e.g. zpinit) to skip the supervisord program and
-#  the supervisor service provider override.
+# How apache (httpd) is supervised is selected by the global hiera key
+# `sc::service_manager` (`supervisor` (default) or `zpinit`), NOT by a
+# per-module flag: `supervisor` includes sc_apache::supervisor (supervisord
+# program + provider override), `zpinit` includes sc_apache::zpinit (writes the
+# zpinit service TOML; the httpd service is flipped to provider => zpinit in
+# site.pp).
 #
 # === hiera example
 #
@@ -47,7 +48,6 @@ class sc_apache (
   $vhost_defaults = {},
   $modules                = undef,
   $custom_modules         = undef,
-  $use_supervisor         = true,
 ){
 
   Class['Apt::Update'] -> Class['Apache']
@@ -103,8 +103,10 @@ class sc_apache (
   }
 
 
-  if $use_supervisor {
-    class { '::sc_apache::supervisor': }
+  $service_manager = lookup('sc::service_manager', Enum['supervisor', 'zpinit'], 'first', 'supervisor')
+  case $service_manager {
+    'zpinit': { class { '::sc_apache::zpinit': } }
+    default:  { class { '::sc_apache::supervisor': } }
   }
 
   class { 'sc_apache::vhosts':
