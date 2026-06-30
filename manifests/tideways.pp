@@ -97,9 +97,13 @@ class sc_apache::tideways (
       require => Package['tideways-daemon'],
     }
 
-    # restart tideways-daemon
+    # restart tideways-daemon after a package change, via whichever supervisor
+    # runs this node. Mirrors sc_supervisor's init wrapper backend detection:
+    # the zpinit control socket is ground truth -- zpctl when zpinit is PID 1,
+    # supervisorctl otherwise. Works on both backends with no data churn.
     exec { 'restart-tideways-daemon':
-      command => '/usr/local/bin/supervisorctl restart tideways-daemon',
+      command     => 'sh -c "if [ -S /run/zpinit.sock ]; then zpctl restart tideways-daemon; else supervisorctl restart tideways-daemon; fi"',
+      path        => ['/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin'],
       refreshonly => true,
     }
   }
