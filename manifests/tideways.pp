@@ -64,7 +64,7 @@ class sc_apache::tideways (
   package {'tideways-daemon':
     ensure  => $daemon_version,
     require => [Class['Apache::Mod::Php'], Apt::Source['tideways']],
-    notify  => $use_supervisor ? { true => Exec['restart-tideways-daemon'], default => undef },
+    notify  => $use_supervisor ? { true => Service['tideways-daemon'], default => undef },
   }
   package {'tideways-php':
     ensure  => $php_extension_version,
@@ -77,34 +77,33 @@ class sc_apache::tideways (
   }
 
   if $use_supervisor {
+    # Define tideways-daemon to the node's supervisor. supervisord::program
+    # self-dispatches: a supervisord program conf on supervisor nodes, a
+    # zpinit::service TOML on zpinit nodes.
     supervisord::program { 'tideways-daemon':
       command     => "/usr/bin/tideways-daemon --log=/var/log/tideways/daemon.log --server=$proxy --env=$environment",
       autostart   => true,
       autorestart => true,
       user        => tideways,
-      require      => Service['tideways-daemon'],
+      require     => Package['tideways-daemon'],
+      before      => Service['tideways-daemon'],
     }
 
-    service { 'tideways-daemon':
-      ensure   => stopped,
-      require  => Package['tideways-daemon'],
-    }
-
-    # remove legacy files
+    # remove legacy init/systemd/supervisor files; the daemon runs under the
+    # node's supervisor instead.
     file { ['/etc/init.d/tideways-daemon', '/etc/supervisor.d/tideways-daemon.conf', '/lib/systemd/system/tideways-daemon.service']:
       ensure  => absent,
       before  => Supervisord::Program['tideways-daemon'],
       require => Package['tideways-daemon'],
     }
 
-    # restart tideways-daemon after a package change, via whichever supervisor
-    # runs this node. Mirrors sc_supervisor's init wrapper backend detection:
-    # the zpinit control socket is ground truth -- zpctl when zpinit is PID 1,
-    # supervisorctl otherwise. Works on both backends with no data churn.
-    exec { 'restart-tideways-daemon':
-      command     => 'sh -c "if [ -S /run/zpinit.sock ]; then zpctl restart tideways-daemon; else supervisorctl restart tideways-daemon; fi"',
-      path        => ['/usr/local/sbin', '/usr/local/bin', '/usr/sbin', '/usr/bin', '/sbin', '/bin'],
-      refreshonly => true,
+    # tideways-daemon runs under whichever supervisor manages this node. site.pp
+    # flips the Service provider (supervisor or zpinit), so the tideways-daemon
+    # package upgrade notifying this service restarts the daemon via the right
+    # control client (supervisorctl or zpctl) -- no backend-specific exec needed.
+    service { 'tideways-daemon':
+      ensure  => running,
+      require => Supervisord::Program['tideways-daemon'],
     }
   }
 
